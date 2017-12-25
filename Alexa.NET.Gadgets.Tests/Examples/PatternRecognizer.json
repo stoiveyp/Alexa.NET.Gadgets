@@ -1,0 +1,14 @@
+﻿{
+  "type": "match",
+  "anchor": "end",
+  "fuzzy": true,
+  "gadgetIds": [ "gadgetId1", "gadgetId2", "gadgetId3" ],
+  "actions": [ "down", "up" ],
+  "pattern": [
+    {
+      "action": "down",
+      "gadgetIds": [ "gadgetId1", "gadgetId2" ],
+      "colors": [ "0000FF" ]
+    }
+  ]
+}

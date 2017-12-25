@@ -10,8 +10,7 @@ namespace Alexa.NET.Gadgets.Tests
         [Fact]
         public void StartInputHandlerDirectiveSerializesProperly()
         {
-            var directive = new StartInputHandlerDirective{MaximumHistoryLength = 512,TimeoutMilliseconds = 5000};
-            var actual = JObject.FromObject(directive);
+            var actual = new StartInputHandlerDirective{MaximumHistoryLength = 512,TimeoutMilliseconds = 5000};
             Assert.True(Utility.CompareJson(actual, "StartInputHandlerDirective.json"));
         }
     }
