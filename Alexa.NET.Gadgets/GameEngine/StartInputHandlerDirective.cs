@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Alexa.NET.Response;
 using Newtonsoft.Json;
 
-namespace Alexa.NET.Response.Directive
+namespace Alexa.NET.Gadgets.GameEngine
 {
     public class StartInputHandlerDirective:IDirective
     {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Alexa.NET.Response.Directive;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using Alexa.NET.Gadgets.GameEngine;
 using Xunit;
 
 namespace Alexa.NET.Gadgets.Tests

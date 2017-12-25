@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Alexa.NET.Response.Directive
+﻿namespace Alexa.NET.Gadgets.GameEngine
 {
     public static class PatternRecognizerAnchor
     {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Alexa.NET.Response.Directive;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Alexa.NET.Response.Directive
+namespace Alexa.NET.Gadgets.GameEngine
 {
     public class DeviationRecognizer : IGadgetRecognizer
     {
