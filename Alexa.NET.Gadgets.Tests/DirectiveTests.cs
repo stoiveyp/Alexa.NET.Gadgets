@@ -9,6 +9,17 @@ namespace Alexa.NET.Gadgets.Tests
     public class DirectiveTests
     {
         [Fact]
+        public void StopInputHandlerDirectiveSerializesProperly()
+        {
+            var actual = new StopInputHandlerDirective
+            {
+                OriginatingRequestId = "amzn1.echo-api.request.406fbc75-8bf8-4077-a73d-519f53d172a4"
+            };
+
+            Assert.True(Utility.CompareJson(actual,"StopInputHandlerDirective.json"));
+        }
+
+        [Fact]
         public void GadgetEventSerializersProperly()
         {
             var actual = new GadgetEvent
