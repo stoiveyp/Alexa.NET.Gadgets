@@ -1,0 +1,8 @@
+﻿{
+  "meets": [ "a recognizer", "a different recognizer" ],
+  "fails": [ "some other recognizer" ],
+  "reports": "history",
+  "shouldEndInputHandler": true,
+  "maximumInvocations": 1,
+  "triggerTimeMilliseconds": 1000
+}

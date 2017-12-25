@@ -21,6 +21,6 @@ namespace Alexa.NET.Response.Directive
         public IDictionary<string, IGadgetRecognizer> Recognizers { get; set; } = new Dictionary<string, IGadgetRecognizer>();
 
         [JsonProperty("events")]
-        public IDictionary<string,IGadgetEvent> Events { get; set; } = new Dictionary<string, IGadgetEvent>();
+        public IDictionary<string,GadgetEvent> Events { get; set; } = new Dictionary<string, GadgetEvent>();
     }
 }
