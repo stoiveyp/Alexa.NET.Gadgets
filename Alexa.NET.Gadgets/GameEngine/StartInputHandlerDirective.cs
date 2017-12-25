@@ -15,7 +15,7 @@ namespace Alexa.NET.Response.Directive
         public int MaximumHistoryLength { get; set; }
 
         [JsonProperty("proxies")]
-        public IList<IGadgetProxy> Proxies { get; set; } = new List<IGadgetProxy>();
+        public IList<string> Proxies { get; set; } = new List<string>();
 
         [JsonProperty("recognizers")]
         public IDictionary<string, IGadgetRecognizer> Recognizers { get; set; } = new Dictionary<string, IGadgetRecognizer>();
