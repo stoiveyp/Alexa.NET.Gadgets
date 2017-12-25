@@ -10,7 +10,18 @@ namespace Alexa.NET.Gadgets.Tests
     public class RecognizerTests
     {
         [Fact]
-        public void DeviationRecognizerSerilaizesCorrectly()
+        public void ProgressRecognizerSerializesCorrectly()
+        {
+            var recognizer = new ProgressRecognizer
+            {
+                Recognizer = "patternMatcher",
+                Completion=50
+            };
+            Assert.True(Utility.CompareJson(recognizer,"ProgressRecognizer.json"));
+        }
+
+        [Fact]
+        public void DeviationRecognizerSerializesCorrectly()
         {
             var recogniser = new DeviationRecognizer
             {

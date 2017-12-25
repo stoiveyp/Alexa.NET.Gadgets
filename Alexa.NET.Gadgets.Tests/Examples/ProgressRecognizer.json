@@ -1,0 +1,5 @@
+﻿{
+  "type": "progress",
+  "recognizer": "patternMatcher",
+  "completion": 50
+}
