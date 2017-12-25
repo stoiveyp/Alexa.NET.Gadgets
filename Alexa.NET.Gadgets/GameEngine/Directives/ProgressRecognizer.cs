@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Alexa.NET.Gadgets.GameEngine
+namespace Alexa.NET.Gadgets.GameEngine.Directives
 {
     public class ProgressRecognizer:IGadgetRecognizer
     {

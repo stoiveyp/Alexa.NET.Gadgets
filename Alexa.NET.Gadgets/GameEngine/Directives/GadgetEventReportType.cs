@@ -1,4 +1,4 @@
-﻿namespace Alexa.NET.Gadgets.GameEngine
+﻿namespace Alexa.NET.Gadgets.GameEngine.Directives
 {
     public static class GadgetEventReportType
     {

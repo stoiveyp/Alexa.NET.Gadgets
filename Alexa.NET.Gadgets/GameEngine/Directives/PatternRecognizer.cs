@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Alexa.NET.Gadgets.GameEngine
+namespace Alexa.NET.Gadgets.GameEngine.Directives
 {
     public class PatternRecognizer:IGadgetRecognizer
     {

@@ -1,7 +1,7 @@
 ﻿using Alexa.NET.Response;
 using Newtonsoft.Json;
 
-namespace Alexa.NET.Gadgets.GameEngine
+namespace Alexa.NET.Gadgets.GameEngine.Directives
 {
     public class StopInputHandlerDirective:IDirective
     {

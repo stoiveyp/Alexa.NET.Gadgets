@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Alexa.NET.Gadgets.GameEngine;
+using Alexa.NET.Gadgets.GameEngine.Directives;
 using Xunit;
 
 namespace Alexa.NET.Gadgets.Tests
