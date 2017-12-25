@@ -1,0 +1,8 @@
+﻿{
+  "type": "GameEngine.StartInputHandler",
+  "timeout": 5000,
+  "maximumHistoryLength": 512,
+  "proxies": [],
+  "recognizers": {},
+  "events": {}
+}
