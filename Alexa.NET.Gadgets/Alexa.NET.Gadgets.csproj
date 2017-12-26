@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
+    <Company />
+    <Version>0.1</Version>
+    <Authors>Steven Pears</Authors>
+    <Product />
+    <PackageReleaseNotes>Input Handler directive and request types</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>A simple skill built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
   </PropertyGroup>
 
   <ItemGroup>
