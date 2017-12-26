@@ -9,6 +9,10 @@
     <PackageReleaseNotes>Input Handler directive and request types</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple skill built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
+    <PackageLicenseUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets</RepositoryUrl>
+    <PackageTags>amazon;alexa;echo;dot;echo dot;gadgets</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
