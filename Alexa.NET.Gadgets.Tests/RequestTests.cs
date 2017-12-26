@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Alexa.NET.Gadgets.GameEngine.Requests;
 using Alexa.NET.Request;
-using Alexa.NET.Request.Type;
 using Xunit;
 
 namespace Alexa.NET.Gadgets.Tests
