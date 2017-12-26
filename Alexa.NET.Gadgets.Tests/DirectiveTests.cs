@@ -21,7 +21,7 @@ namespace Alexa.NET.Gadgets.Tests
         [Fact]
         public void GadgetEventSerializersProperly()
         {
-            var actual = new GadgetEvent
+            var actual = new InputHandlerEvent
             {
                 Meets = new List<string> { "a recognizer", "a different recognizer" },
                 Fails = new List<string> { "some other recognizer" },
@@ -31,7 +31,7 @@ namespace Alexa.NET.Gadgets.Tests
                 TriggerTimeMilliseconds = 1000
             };
 
-            Assert.True(Utility.CompareJson(actual,"GadgetEvent.json"));
+            Assert.True(Utility.CompareJson(actual,"InputHandlerEvent.json"));
         }
 
         [Fact]

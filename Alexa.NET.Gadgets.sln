@@ -5,7 +5,12 @@ VisualStudioVersion = 15.0.27205.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alexa.NET.Gadgets", "Alexa.NET.Gadgets\Alexa.NET.Gadgets.csproj", "{EE3DE9F0-E1DB-4B12-9636-A5F5A6B32B13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alexa.NET.Gadgets.Tests", "Alexa.NET.Gadgets.Tests\Alexa.NET.Gadgets.Tests.csproj", "{B83627AD-4C4C-43C5-A7ED-970A7D0A4221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alexa.NET.Gadgets.Tests", "Alexa.NET.Gadgets.Tests\Alexa.NET.Gadgets.Tests.csproj", "{B83627AD-4C4C-43C5-A7ED-970A7D0A4221}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F64CFE5-85EE-4930-A832-95A1E8EF13FA}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

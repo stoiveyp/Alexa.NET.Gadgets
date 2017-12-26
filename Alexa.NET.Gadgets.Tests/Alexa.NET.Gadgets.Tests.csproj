@@ -21,7 +21,10 @@
     <None Update="Examples\DeviationRecognizer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Examples\GadgetEvent.json">
+    <None Update="Examples\InputHandlerEvent.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\InputHandlerEventRequest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Examples\PatternRecognizer.json">

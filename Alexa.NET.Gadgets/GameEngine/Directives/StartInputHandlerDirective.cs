@@ -22,6 +22,6 @@ namespace Alexa.NET.Gadgets.GameEngine.Directives
         public IDictionary<string, IGadgetRecognizer> Recognizers { get; set; } = new Dictionary<string, IGadgetRecognizer>();
 
         [JsonProperty("events")]
-        public IDictionary<string,GadgetEvent> Events { get; set; } = new Dictionary<string, GadgetEvent>();
+        public IDictionary<string,InputHandlerEvent> Events { get; set; } = new Dictionary<string, InputHandlerEvent>();
     }
 }

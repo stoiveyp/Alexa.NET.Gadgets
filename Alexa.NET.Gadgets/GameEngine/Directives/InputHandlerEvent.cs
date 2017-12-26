@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Alexa.NET.Gadgets.GameEngine.Directives
 {
-    public class GadgetEvent
+    public class InputHandlerEvent
     {
         [JsonProperty("meets")]
         public IList<string> Meets { get; set; } = new List<string>();
