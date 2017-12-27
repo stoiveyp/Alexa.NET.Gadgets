@@ -14,17 +14,15 @@ namespace Alexa.NET.Gadgets.Tests
             var setLight = new SetLightDirective
             {
                 TargetGadgets = new List<string> { "gadgetId1", "gadgetId2" },
-                Parameters = new List<SetLightParameter>
+                Parameters = new SetLightParameter
                 {
-                    new SetLightParameter
+                    TriggerEvent = TriggerEvent.None,
+                    TriggerEventTimeMilliseconds = 0,
+                    Animations = new List<SetLightAnimation>{new SetLightAnimation
                     {
-                        TriggerEvent = TriggerEvent.None,
-                        TriggerEventTimeMilliseconds = 0,
-                        Animations = new SetLightAnimation
-                            {
-                                Repeat=1,
-                                TargetLights = new List<int>{1},
-                                Sequence = new List<AnimationSegment>
+                        Repeat = 1,
+                        TargetLights = new List<int> { 1 },
+                        Sequence = new List<AnimationSegment>
                                 {
                                     new AnimationSegment
                                     {
@@ -33,8 +31,9 @@ namespace Alexa.NET.Gadgets.Tests
                                         Color="0000FF"
                                     }
                                 }
-                            }
-                        }
+                    }
+                }
+
                 }
             };
 

@@ -12,6 +12,6 @@ namespace Alexa.NET.Gadgets.GadgetController
         public int TriggerEventTimeMilliseconds { get; set; }
 
         [JsonProperty("animations")]
-        public SetLightAnimation Animations { get; set; }
+        public List<SetLightAnimation> Animations { get; set; } = new List<SetLightAnimation>();
     }
 }

@@ -15,6 +15,6 @@ namespace Alexa.NET.Gadgets.GadgetController
         [JsonProperty("targetGadgets")] public List<string> TargetGadgets { get; set; } = new List<string>();
 
         [JsonProperty("parameters")]
-        public List<SetLightParameter> Parameters { get; set; } = new List<SetLightParameter>();
+        public SetLightParameter Parameters { get; set; }
     }
 }

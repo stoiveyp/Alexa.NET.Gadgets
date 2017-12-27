@@ -5,7 +5,8 @@
   "parameters": {
     "triggerEvent": "none",
     "triggerEventTimeMs": 0,
-    "animations": {
+    "animations": [
+      {
         "repeat": 1,
         "targetLights": [ 1 ],
         "sequence": [
@@ -16,5 +17,6 @@
           }
         ]
       }
+    ]
   }
 }
