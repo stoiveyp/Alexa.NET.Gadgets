@@ -1,0 +1,22 @@
+﻿{
+  "type": "GadgetController.SetLight",
+  "version": 1,
+  "targetGadgets": [ "gadgetId1", "gadgetId2" ],
+  "parameters": {
+    "triggerEvent": "none",
+    "triggerEventTimeMs": 0,
+    "animations": [
+      {
+        "repeat": 1,
+        "targetLights": [ 1 ],
+        "sequence": [
+          {
+            "durationMs": 10000,
+            "blend": false,
+            "color": "0000FF"
+          }
+        ]
+      }
+    ]
+  }
+}
