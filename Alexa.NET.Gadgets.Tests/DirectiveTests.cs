@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Alexa.NET.Gadgets.GadgetController;
 using Alexa.NET.Gadgets.GameEngine;
 using Alexa.NET.Gadgets.GameEngine.Directives;
@@ -18,26 +19,37 @@ namespace Alexa.NET.Gadgets.Tests
                 {
                     TriggerEvent = TriggerEvent.None,
                     TriggerEventTimeMilliseconds = 0,
-                    Animations = new List<SetLightAnimation>{new SetLightAnimation
-                    {
-                        Repeat = 1,
-                        TargetLights = new List<int> { 1 },
-                        Sequence = new List<AnimationSegment>
-                                {
-                                    new AnimationSegment
+                    Animations = new List<SetLightAnimation> {
+                        new SetLightAnimation {
+                            Repeat = 1,
+                            TargetLights = new List<int> { 1 },
+                            Sequence = new List<AnimationSegment>
                                     {
-                                        Blend=false,
-                                        DurationMilliseconds = 10000,
-                                        Color="0000FF"
+                                        new AnimationSegment
+                                        {
+                                            Blend=false,
+                                            DurationMilliseconds = 10000,
+                                            Color="0000FF"
+                                        }
                                     }
-                                }
+                        }
                     }
-                }
-
                 }
             };
 
             Assert.True(Utility.CompareJson(setLight, "SetLightDirective.json"));
+        }
+
+        [Fact]
+        public void SetLightExtensionWorks()
+        {
+            var response = ResponseBuilder.Empty();
+            response.GadgetColor("0000FF", new[] { "gadgetid1" });
+            Assert.Single(response.Response.Directives);
+
+            var directive = response.Response.Directives.First() as SetLightDirective;
+            Assert.IsType<SetLightDirective>(directive);
+            Assert.Equal("0000FF", directive.Parameters.Animations.First().Sequence.First().Color);
         }
 
         [Fact]
