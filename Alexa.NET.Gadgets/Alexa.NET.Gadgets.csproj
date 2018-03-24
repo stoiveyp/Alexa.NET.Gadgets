@@ -6,7 +6,7 @@
     <Version>0.1</Version>
     <Authors>Steven Pears</Authors>
     <Product />
-    <PackageReleaseNotes>Gadget controller interface now supported</PackageReleaseNotes>
+    <PackageReleaseNotes>Add repeat option to patterns</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple package built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
     <PackageLicenseUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets/blob/master/LICENSE</PackageLicenseUrl>
