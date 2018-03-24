@@ -13,5 +13,8 @@ namespace Alexa.NET.Gadgets.GameEngine.Directives
 
         [JsonProperty("colors")]
         public IList<string> Colors { get; set; } = new List<string>();
+
+        [JsonProperty("repeat",NullValueHandling = NullValueHandling.Ignore)]
+        public int Repeat { get; set; }
     }
 }
