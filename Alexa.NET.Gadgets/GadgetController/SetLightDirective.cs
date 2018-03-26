@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using System.Text;
 using Alexa.NET.Response;
 using Newtonsoft.Json;
@@ -16,5 +18,10 @@ namespace Alexa.NET.Gadgets.GadgetController
 
         [JsonProperty("parameters")]
         public SetLightParameter Parameters { get; set; }
+
+        public static SetLightDirective Create(IEnumerable<string> targetGadgets, SetLightParameter parameter)
+        {
+            return new SetLightDirective {TargetGadgets = targetGadgets.ToList(), Parameters = parameter};
+        }
     }
 }

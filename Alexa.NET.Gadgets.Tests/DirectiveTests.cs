@@ -41,6 +41,25 @@ namespace Alexa.NET.Gadgets.Tests
         }
 
         [Fact]
+        public void SetLightDirectiveViaCreationSerializesProperly()
+        {
+            var setLight = SetLightDirective.Create(
+                new[] {"gadgetId1", "gadgetId2"},
+                SetLightParameter.Create(
+                    TriggerEvent.None, 0,
+                    SetLightAnimation.Create(1, new[] {1},
+                        new AnimationSegment
+                        {
+                            Blend = false,
+                            DurationMilliseconds = 10000,
+                            Color = "0000FF"
+                        }
+                    )));
+
+            Assert.True(Utility.CompareJson(setLight, "SetLightDirective.json"));
+        }
+
+        [Fact]
         public void SetLightExtensionWorks()
         {
             var response = ResponseBuilder.Empty();

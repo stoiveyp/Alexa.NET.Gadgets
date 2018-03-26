@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Alexa.NET.Gadgets.GadgetController
@@ -13,5 +14,16 @@ namespace Alexa.NET.Gadgets.GadgetController
 
         [JsonProperty("animations")]
         public List<SetLightAnimation> Animations { get; set; } = new List<SetLightAnimation>();
+
+        public static SetLightParameter Create(string triggerEvent, int triggerMilliseconds,
+            params SetLightAnimation[] animations)
+        {
+            return new SetLightParameter
+            {
+                TriggerEvent = triggerEvent,
+                TriggerEventTimeMilliseconds = triggerMilliseconds,
+                Animations = animations.ToList()
+            };
+        }
     }
 }
