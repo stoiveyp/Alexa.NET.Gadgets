@@ -19,9 +19,14 @@ namespace Alexa.NET.Gadgets.GadgetController
         [JsonProperty("parameters")]
         public SetLightParameter Parameters { get; set; }
 
+        public static SetLightDirective Create(SetLightParameter parameter)
+        {
+            return Create(null, parameter);
+        }
+
         public static SetLightDirective Create(IEnumerable<string> targetGadgets, SetLightParameter parameter)
         {
-            return new SetLightDirective {TargetGadgets = targetGadgets.ToList(), Parameters = parameter};
+            return new SetLightDirective { TargetGadgets = targetGadgets?.ToList(), Parameters = parameter };
         }
 
         public bool ShouldSerializeTargetGadgets()

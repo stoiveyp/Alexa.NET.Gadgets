@@ -12,5 +12,10 @@ namespace Alexa.NET.Gadgets.GadgetController
 
         [JsonProperty("blend")]
         public bool Blend { get; set; }
+
+        public static AnimationSegment Create(string color, int duration, bool blend = false)
+        {
+            return new AnimationSegment { Color = color, DurationMilliseconds = duration, Blend = blend };
+        }
     }
 }

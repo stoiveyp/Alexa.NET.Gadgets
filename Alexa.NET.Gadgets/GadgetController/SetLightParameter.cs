@@ -14,6 +14,11 @@ namespace Alexa.NET.Gadgets.GadgetController
         [JsonProperty("animations")]
         public List<SetLightAnimation> Animations { get; set; } = new List<SetLightAnimation>();
 
+        public static SetLightParameter Create(params SetLightAnimation[] animations)
+        {
+            return Create(GadgetController.TriggerEvent.None, 0, animations);
+        }
+
         public static SetLightParameter Create(string triggerEvent, int triggerMilliseconds,
             params SetLightAnimation[] animations)
         {
