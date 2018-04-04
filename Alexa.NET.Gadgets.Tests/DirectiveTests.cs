@@ -22,7 +22,7 @@ namespace Alexa.NET.Gadgets.Tests
                     Animations = new List<SetLightAnimation> {
                         new SetLightAnimation {
                             Repeat = 1,
-                            TargetLights = new List<int> { 1 },
+                            TargetLights = new List<string> { "1" },
                             Sequence = new List<AnimationSegment>
                                     {
                                         new AnimationSegment
@@ -47,7 +47,7 @@ namespace Alexa.NET.Gadgets.Tests
                 new[] {"gadgetId1", "gadgetId2"},
                 SetLightParameter.Create(
                     TriggerEvent.None, 0,
-                    SetLightAnimation.Create(1, new[] {1},
+                    SetLightAnimation.Create(1, new[] {"1"},
                         new AnimationSegment
                         {
                             Blend = false,

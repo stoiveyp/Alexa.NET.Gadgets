@@ -8,7 +8,7 @@
     "animations": [
       {
         "repeat": 1,
-        "targetLights": [ 1 ],
+        "targetLights": [ "1" ],
         "sequence": [
           {
             "durationMs": 10000,
