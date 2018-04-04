@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Alexa.NET.Gadgets.GameEngine.Directives
@@ -21,5 +22,10 @@ namespace Alexa.NET.Gadgets.GameEngine.Directives
 
         [JsonProperty("pattern")]
         public IList<Pattern> Patterns { get; set; } = new List<Pattern>();
+
+        public bool ShouldSerializeGadgetIds()
+        {
+            return GadgetIds?.Any() ?? false;
+        }
     }
 }

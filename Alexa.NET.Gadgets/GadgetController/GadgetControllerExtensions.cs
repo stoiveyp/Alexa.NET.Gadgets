@@ -19,7 +19,7 @@ namespace Alexa.NET.Gadgets.GadgetController
                     Animations = new List<SetLightAnimation>{new SetLightAnimation
                         {
                             Repeat = 1,
-                            TargetLights = new List<int> { 1 },
+                            TargetLights = new List<string> { "1" },
                             Sequence = new List<AnimationSegment>
                             {
                                 new AnimationSegment

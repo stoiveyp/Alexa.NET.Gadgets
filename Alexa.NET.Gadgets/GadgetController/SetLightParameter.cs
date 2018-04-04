@@ -6,8 +6,7 @@ namespace Alexa.NET.Gadgets.GadgetController
 {
     public class SetLightParameter
     {
-        [JsonProperty("triggerEvent")]
-        public string TriggerEvent { get; set; }
+        [JsonProperty("triggerEvent")] public string TriggerEvent { get; set; } = GadgetController.TriggerEvent.None;
 
         [JsonProperty("triggerEventTimeMs")]
         public int TriggerEventTimeMilliseconds { get; set; }

@@ -23,5 +23,10 @@ namespace Alexa.NET.Gadgets.GadgetController
         {
             return new SetLightDirective {TargetGadgets = targetGadgets.ToList(), Parameters = parameter};
         }
+
+        public bool ShouldSerializeTargetGadgets()
+        {
+            return TargetGadgets?.Any() ?? false;
+        }
     }
 }

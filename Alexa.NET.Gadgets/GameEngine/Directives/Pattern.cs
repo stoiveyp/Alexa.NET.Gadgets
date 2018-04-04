@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Alexa.NET.Gadgets.GameEngine.Directives
@@ -16,5 +17,15 @@ namespace Alexa.NET.Gadgets.GameEngine.Directives
 
         [JsonProperty("repeat",NullValueHandling = NullValueHandling.Ignore)]
         public int? Repeat { get; set; }
+
+        public bool ShouldSerializeColors()
+        {
+            return Colors?.Any() ?? false;
+        }
+
+        public bool ShouldSerializeGadgetIds()
+        {
+            return GadgetIds?.Any() ?? false;
+        }
     }
 }
