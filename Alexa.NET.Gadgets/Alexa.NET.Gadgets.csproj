@@ -3,11 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <Company />
-    <Version>0.1</Version>
+    <Version>1.0</Version>
     <Authors>Steven Pears</Authors>
     <Product />
-    <PackageReleaseNotes>Add "create" helper methods to the SetLight tree of objects
-Make pattern repeat property optional</PackageReleaseNotes>
+    <PackageReleaseNotes>Update directives to match real world directives now skill api beta has been released</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple package built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
     <PackageLicenseUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets/blob/master/LICENSE</PackageLicenseUrl>
