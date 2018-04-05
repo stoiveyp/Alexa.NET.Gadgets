@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alexa.NET.Request;
+using Alexa.NET.Response;
 using Alexa.NET.Gadgets.GadgetController;
 using Alexa.NET.Gadgets.GameEngine;
+using Alexa.NET.Gadgets.GameEngine.Requests;
 using Alexa.NET.Gadgets.GameEngine.Directives;
 using Xunit;
 
@@ -44,10 +48,10 @@ namespace Alexa.NET.Gadgets.Tests
         public void SetLightDirectiveViaCreationSerializesProperly()
         {
             var setLight = SetLightDirective.Create(
-                new[] {"gadgetId1", "gadgetId2"},
+                new[] { "gadgetId1", "gadgetId2" },
                 SetLightParameter.Create(
                     TriggerEvent.None, 0,
-                    SetLightAnimation.Create(1, new[] {"1"},
+                    SetLightAnimation.Create(1, new[] { "1" },
                         new AnimationSegment
                         {
                             Blend = false,
@@ -65,9 +69,18 @@ namespace Alexa.NET.Gadgets.Tests
             var setLight = SetLightDirective.Create(
                 SetLightParameter.Create(
                     SetLightAnimation.CreateSingle(
-                        AnimationSegment.Create("0000FF",10000)
+                        AnimationSegment.Create("0000FF", 10000)
                     )));
 
+            Assert.True(Utility.CompareJson(setLight, "SetLightDirectiveBroadcast.json"));
+        }
+
+        [Fact]
+        public void GadgetColorExtensionWithNoGadgets()
+        {
+            var response = new SkillResponse();
+            var setLight = response.GadgetColor("0000FF", 10000);
+            Assert.Equal(setLight, response.Response.Directives.First());
             Assert.True(Utility.CompareJson(setLight, "SetLightDirectiveBroadcast.json"));
         }
 
@@ -75,10 +88,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void SetLightExtensionWorks()
         {
             var response = ResponseBuilder.Empty();
-            response.GadgetColor("0000FF", new[] { "gadgetid1" });
+            var directive = response.GadgetColor("0000FF", new[] { "gadgetid1" });
             Assert.Single(response.Response.Directives);
-
-            var directive = response.Response.Directives.First() as SetLightDirective;
+            Assert.Equal(directive, response.Response.Directives.First());
             Assert.IsType<SetLightDirective>(directive);
             Assert.Equal("0000FF", directive.Parameters.Animations.First().Sequence.First().Color);
         }
@@ -115,6 +127,121 @@ namespace Alexa.NET.Gadgets.Tests
         {
             var actual = new StartInputHandlerDirective { MaximumHistoryLength = 512, TimeoutMilliseconds = 5000 };
             Assert.True(Utility.CompareJson(actual, "StartInputHandlerDirective.json"));
+        }
+
+        [Fact]
+        public void AddRollCallGeneratesExpectedObjectModel()
+        {
+            var firstGadget = "first";
+            var secondGadget = "second";
+            var timeout = 10000;
+            var response = new SkillResponse();
+            var directive = response.AddRollCall(timeout, firstGadget, secondGadget);
+            Assert.Single(response.Response.Directives);
+            Assert.Equal(directive, response.Response.Directives.First());
+            Assert.NotNull(directive);
+
+            Assert.Equal(2, directive.Proxies.Count);
+            Assert.Equal(firstGadget, directive.Proxies[0]);
+            Assert.Equal(secondGadget, directive.Proxies[1]);
+
+            Assert.Equal(2, directive.Events.Count);
+            var timeOutEvent = directive.Events["timed out"];
+
+            Assert.Single(timeOutEvent.Meets);
+            Assert.Equal("timed out", timeOutEvent.Meets.First());
+            Assert.Equal(GadgetEventReportType.History, timeOutEvent.Reports);
+
+            var rollCallCompleteEvent = directive.Events["rollcall complete"];
+            Assert.Equal("rollcall complete", rollCallCompleteEvent.Meets.First());
+            Assert.Equal(GadgetEventReportType.Matches, rollCallCompleteEvent.Reports);
+
+            Assert.Single(directive.Recognizers);
+            var rollCallRecogniser = directive.Recognizers["rollcall complete"] as PatternRecognizer;
+
+            Assert.NotNull(rollCallRecogniser);
+            Assert.True(rollCallRecogniser.Fuzzy);
+            Assert.Equal(PatternRecognizerAnchor.Start, rollCallRecogniser.Anchor);
+            Assert.Equal(2, rollCallRecogniser.Patterns.Count);
+
+            var firstPattern = rollCallRecogniser.Patterns.First();
+            Assert.Equal(1, firstPattern.Repeat);
+            Assert.Single(firstPattern.GadgetIds);
+            Assert.Equal(firstGadget, firstPattern.GadgetIds.First());
+            Assert.Equal(PatternAction.Down, firstPattern.Action);
+
+            var secondPattern = rollCallRecogniser.Patterns.Skip(1).First();
+            Assert.Equal(1, secondPattern.Repeat);
+            Assert.Single(secondPattern.GadgetIds);
+            Assert.Equal(secondGadget, secondPattern.GadgetIds.First());
+            Assert.Equal(PatternAction.Down, secondPattern.Action);
+        }
+
+        [Fact]
+        public void TryRollCallReturnFalseIfEventDoesntMatch()
+        {
+            var request = new SkillRequest();
+            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            {
+                Events = new[] { new GameEngine.Requests.GadgetEvent { Name = "timed out" } }
+            };
+            Assert.False(((InputHandlerEventRequest)request.Request).TryRollCallResult(out Dictionary<string, string> results));
+        }
+
+        [Fact]
+        public void TryRollCallReturnTrueIfEventMatches()
+        {
+            var request = new SkillRequest();
+            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            {
+                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                    Name = GameEngineExtensions.RollCallCompleteName ,
+                                        InputEvents = new[]{
+                        new InputEvent{GadgetId="first"},
+                        new InputEvent{GadgetId="second"}
+                        }}
+                        }
+            };
+            Assert.True(((InputHandlerEventRequest)request.Request).TryRollCallResult(out Dictionary<string, string> results, "first", "second"));
+        }
+
+        [Fact]
+        public void TryRollCallThrowsExceptionOnInputMismatch()
+        {
+            var request = new SkillRequest();
+            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            {
+                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                    Name = GameEngineExtensions.RollCallCompleteName,
+                    InputEvents = new[]{
+                        new InputEvent{GadgetId="first"},
+                        new InputEvent{GadgetId="second"}
+                        }}}
+            };
+
+            Assert.Throws<InvalidOperationException>(() => ((InputHandlerEventRequest)request.Request).TryRollCallResult(out Dictionary<string, string> results, "first"));
+
+        }
+
+                [Fact]
+        public void TryRollCallGeneratesDictionaryWithValidData()
+        {
+            var request = new SkillRequest();
+            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            {
+                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                    Name = GameEngineExtensions.RollCallCompleteName,
+                    InputEvents = new[]{
+                        new InputEvent{GadgetId="xxx"},
+                        new InputEvent{GadgetId="yyy"}
+                        }}}
+            };
+
+            ((InputHandlerEventRequest)request.Request).TryRollCallResult(out Dictionary<string, string> results, "first", "second");
+            Assert.Equal(2,results.Count);
+            Assert.Equal("xxx",results["first"]);
+            Assert.Equal("yyy",results["second"]);
+
         }
     }
 }
