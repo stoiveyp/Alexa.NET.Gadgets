@@ -165,13 +165,11 @@ namespace Alexa.NET.Gadgets.Tests
             Assert.Equal(2, rollCallRecogniser.Patterns.Count);
 
             var firstPattern = rollCallRecogniser.Patterns.First();
-            Assert.Equal(1, firstPattern.Repeat);
             Assert.Single(firstPattern.GadgetIds);
             Assert.Equal(firstGadget, firstPattern.GadgetIds.First());
             Assert.Equal(PatternAction.Down, firstPattern.Action);
 
             var secondPattern = rollCallRecogniser.Patterns.Skip(1).First();
-            Assert.Equal(1, secondPattern.Repeat);
             Assert.Single(secondPattern.GadgetIds);
             Assert.Equal(secondGadget, secondPattern.GadgetIds.First());
             Assert.Equal(PatternAction.Down, secondPattern.Action);
