@@ -15,17 +15,6 @@ namespace Alexa.NET.Gadgets.Tests
         }
 
         [Fact]
-        public void CommunityExampleDeserializes()
-        {
-            var actual = Utility.ExampleFileContent<SkillRequest>("CommunityExample.json");
-            var request = actual.Request as InputHandlerEventRequest;
-            request.TryRollCallResult(out Dictionary<string, string> results, "first", "second");
-            Assert.NotNull(results);
-            Assert.Equal("amzn1.ask.gadget.05RPH",results["first"]);
-            Assert.Equal("amzn1.ask.gadget.05RPH7PJG",results["second"]);
-        }
-
-        [Fact]
         public void InputHandlerEventRequestDeserializesCorrectly()
         {
             var actual = Utility.ExampleFileContent<SkillRequest>("InputHandlerEventRequest.json");

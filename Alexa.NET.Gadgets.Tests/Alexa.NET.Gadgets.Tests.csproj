@@ -18,9 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-      <None Update="Examples\CommunityExample.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Examples\DeviationRecognizer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
