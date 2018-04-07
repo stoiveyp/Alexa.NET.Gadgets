@@ -27,5 +27,10 @@ namespace Alexa.NET.Gadgets.GameEngine.Directives
         {
             return GadgetIds?.Any() ?? false;
         }
+
+        public bool ShouldSerializeActions()
+        {
+            return Actions?.Any() ?? false;
+        }
     }
 }

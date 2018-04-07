@@ -63,7 +63,6 @@ namespace Alexa.NET.Gadgets.GameEngine
         {
             return new Pattern
             {
-                Repeat = 1,
                 Action = PatternAction.Down,
                 GadgetIds = new List<string> { name }
             };
