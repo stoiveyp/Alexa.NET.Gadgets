@@ -6,7 +6,7 @@
     <Version>1.0</Version>
     <Authors>Steven Pears</Authors>
     <Product />
-    <PackageReleaseNotes>Update readme, improve GadgetController extensions add GameExtensions to both request and response objects</PackageReleaseNotes>
+    <PackageReleaseNotes>Correct problem in AddRollCall</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple package built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
     <PackageLicenseUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets/blob/master/LICENSE</PackageLicenseUrl>
