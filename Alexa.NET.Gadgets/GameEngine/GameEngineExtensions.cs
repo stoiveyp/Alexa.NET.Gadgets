@@ -9,6 +9,34 @@ namespace Alexa.NET.Gadgets.GameEngine
     public static class GameEngineExtensions
     {
         public const string RollCallCompleteName = "rollcall complete";
+        private const string TimedOutName = "timed out";
+
+        public static bool TryRollCallOptionalResult(this GameEngine.Requests.InputHandlerEventRequest request, out Dictionary<string, string> results, params string[] gadgetNames)
+        {
+            var rollcallEvent = request.Events.FirstOrDefault();
+
+            if (rollcallEvent == null)
+            {
+                results = null;
+                return false;
+            }
+
+            if (rollcallEvent.Name == RollCallCompleteName)
+            {
+                return TryRollCallResult(request, out results, gadgetNames);
+            }
+
+            if (rollcallEvent.Name != TimedOutName)
+            {
+                results = null;
+                return false;
+            }
+
+            var gadgetIds = rollcallEvent.InputEvents.Where(e => e.Action == PatternAction.Down).Select(e => e.GadgetId).Distinct().ToArray();
+            var maxZip = Math.Min(gadgetIds.Length, gadgetNames.Length);
+            results = gadgetNames.Take(maxZip).Zip(gadgetIds.Take(maxZip),(name, id) => Tuple.Create(name,id)).ToDictionary(a => a.Item1, a => a.Item2);
+            return true;
+        }
 
         public static bool TryRollCallResult(this GameEngine.Requests.InputHandlerEventRequest request, out Dictionary<string, string> results, params string[] gadgetNames)
         {

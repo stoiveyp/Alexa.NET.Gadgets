@@ -222,7 +222,7 @@ namespace Alexa.NET.Gadgets.Tests
 
         }
 
-                [Fact]
+        [Fact]
         public void TryRollCallGeneratesDictionaryWithValidData()
         {
             var request = new SkillRequest();
@@ -237,10 +237,21 @@ namespace Alexa.NET.Gadgets.Tests
             };
 
             ((InputHandlerEventRequest)request.Request).TryRollCallResult(out Dictionary<string, string> results, "first", "second");
-            Assert.Equal(2,results.Count);
-            Assert.Equal("xxx",results["first"]);
-            Assert.Equal("yyy",results["second"]);
+            Assert.Equal(2, results.Count);
+            Assert.Equal("xxx", results["first"]);
+            Assert.Equal("yyy", results["second"]);
 
+        }
+
+        [Fact]
+        public void TryRollCallGeneratesPartialDictionaryWithOptional()
+        {
+            var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
+            var result = ((InputHandlerEventRequest)request.Request).TryRollCallOptionalResult(out Dictionary<string,string> mapping, "first", "second","third","fourth");
+            Assert.True(result);
+            Assert.Equal(2,mapping.Count);
+            Assert.Equal("amzn1.ask.gadget.05RPH7PJ",mapping["first"]);
+            Assert.Equal("amzn1.ask.gadget.05RP0000", mapping["second"]);
         }
     }
 }
