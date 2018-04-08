@@ -140,6 +140,7 @@ namespace Alexa.NET.Gadgets.Tests
             Assert.Single(response.Response.Directives);
             Assert.Equal(directive, response.Response.Directives.First());
             Assert.NotNull(directive);
+            Assert.Null(response.Response.ShouldEndSession);
 
             Assert.Equal(2, directive.Proxies.Count);
             Assert.Equal(firstGadget, directive.Proxies[0]);
