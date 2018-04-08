@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+      <None Update="Examples\TimedOutGadgets.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\DeviationRecognizer.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

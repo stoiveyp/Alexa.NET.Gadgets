@@ -1,0 +1,82 @@
+{
+    "version": "1.0",
+    "session": {
+        "new": false,
+        "sessionId": "amzn1.echo-api.session.00000000-0000-0000-0000-000000000000",
+        "application": {
+            "applicationId": "amzn1.ask.skill.00000000-0000-0000-0000-000000000000"
+        },
+        "user": {
+            "userId": "amzn1.ask.account.AGTY"
+        }
+    },
+    "context": {
+        "AudioPlayer": {
+            "playerActivity": "FINISHED"
+        },
+        "Display": {},
+        "System": {
+            "application": {
+                "applicationId": "amzn1.ask.skill.00000000-0000-0000-0000-000000000000"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.AGTYSL"
+            },
+            "device": {
+                "deviceId": "amzn1.ask.device.AES7OFGH",
+                "supportedInterfaces": {
+                    "AudioPlayer": {},
+                    "Display": {
+                        "templateVersion": "1.0",
+                        "markupVersion": "1.0"
+                    },
+                    "VideoApp": {}
+                }
+            },
+            "apiEndpoint": "https://api.eu.amazonalexa.com",
+            "apiAccessToken": "eyJ0eXAiOiJ"
+        }
+    },
+    "request": {
+        "type": "GameEngine.InputHandlerEvent",
+        "requestId": "amzn1.echo-api.request.00000000-0000-0000-0000-000000000000",
+        "timestamp": "2018-04-08T08:05:36Z",
+        "locale": "de-DE",
+        "originatingRequestId": "amzn1.echo-api.request.00000000-0000-0000-0000-000000000000",
+        "events": [
+            {
+                "name": "timed out",
+                "inputEvents": [
+                    {
+                        "gadgetId": "amzn1.ask.gadget.05RPH7PJ",
+                        "timestamp": "2018-04-08T08:05:29.530Z",
+                        "color": "000000",
+                        "feature": "press",
+                        "action": "down"
+                    },
+                    {
+                        "gadgetId": "amzn1.ask.gadget.05RPH7PJ",
+                        "timestamp": "2018-04-08T08:05:29.839Z",
+                        "color": "000000",
+                        "feature": "press",
+                        "action": "up"
+                    },
+                    {
+                        "gadgetId": "amzn1.ask.gadget.05RP0000",
+                        "timestamp": "2018-04-08T08:05:29.530Z",
+                        "color": "000000",
+                        "feature": "press",
+                        "action": "down"
+                    },
+                    {
+                        "gadgetId": "amzn1.ask.gadget.05RP0000",
+                        "timestamp": "2018-04-08T08:05:29.839Z",
+                        "color": "000000",
+                        "feature": "press",
+                        "action": "up"
+                    }
+                ]
+            }
+        ]
+    }
+}
