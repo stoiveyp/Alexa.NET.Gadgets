@@ -40,6 +40,7 @@ namespace Alexa.NET.Gadgets.GameEngine
             AddEvents(directive);
             AddRecognisers(directive, friendlyNames);
             SetDirective(response, directive);
+            response.Response.ShouldEndSession = null;
             return directive;
         }
 
