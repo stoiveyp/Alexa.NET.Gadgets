@@ -95,8 +95,8 @@ This is equivalent to:
     - A "rollcall complete" recogniser
       - A pattern for each name to be pressed down, once, in order. 
 
-## Roll Call - Find gadgets used in roll call
-When an InputHandlerEventRequest is identified, this will check to see if it was a rollcall event, and then map the matched events to the gadget ids in the order passed in.
+## Roll Call - Find mandatory gadgets used in roll call
+When an InputHandlerEventRequest is identified, this will check to see if it was a rollcall event, and then map the matched events to the gadget ids in the order passed in. If not all gadgets are pressed down within the time it will return false.
 
 Assuming the previous AddRollCall method was used, this would return a dictionary mapping first -> firstGadgetId, second -> secondGadgetId
 ```csharp
@@ -106,5 +106,23 @@ switch(skillRequest.Request)
 {
     case InputHandlerEventRequest inputHandler:
       inputHandler.TryRollCallResult(out Dictionary<string,string> mapping, "first","second");
+}
+```
+
+
+## Roll Call - Find optional gadgets used in roll call
+When an InputHandlerEventRequest is identified, this will check to see if it was a rollcall event, and then map the matched events to the gadget ids in the order passed in. If not all gadgets are passed in, it will return a mapping for those distinct buttons pressed during the time. If the event was neither roll call nor time out, or no event was found, then it will return false.
+
+Assuming the previous AddRollCall method was used, this would return:
+- a dictionary mapping first -> firstGadgetId, second -> secondGadgetId if both buttons were pressed
+- a dictionary mapping first -> firstGadgetId if one button was pressed within the timeout
+- a false result and a null mapping object if the event was neither rollcall nor timeout
+```csharp
+using Alexa.NET.Gadgets.GameEngine
+...
+switch(skillRequest.Request)
+{
+    case InputHandlerEventRequest inputHandler:
+      inputHandler.TryRollCallOptionalResult(out Dictionary<string,string> mapping, "first","second");
 }
 ```
