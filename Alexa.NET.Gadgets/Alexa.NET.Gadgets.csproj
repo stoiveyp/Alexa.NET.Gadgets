@@ -6,7 +6,8 @@
     <Version>1.0</Version>
     <Authors>Steven Pears</Authors>
     <Product />
-    <PackageReleaseNotes>AddRollCall now sets ShouldEndSession to null, correctly allowing gadget inpit</PackageReleaseNotes>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <PackageReleaseNotes>change to NetStandard Library 1.6.0 for consistency with Alexa.NET</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple package built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
     <PackageLicenseUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets/blob/master/LICENSE</PackageLicenseUrl>
