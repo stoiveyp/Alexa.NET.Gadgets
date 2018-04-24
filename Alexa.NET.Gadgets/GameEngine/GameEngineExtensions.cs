@@ -101,20 +101,38 @@ namespace Alexa.NET.Gadgets.GameEngine
             directive.Recognizers.Add(triggerEventName,recogniser);
         }
 
-        public static bool MapEventGadgets(this Requests.InputHandlerEventRequest request, string eventName, out string gadgetId)
+        public static bool TryMapEventGadget(this Requests.InputHandlerEventRequest request, string eventName, out string gadgetId)
         {
-            gadgetId = null;
-            return false;
+            var gadgetEvent = request.Events.FirstOrDefault(e => e.Name == eventName);
+            if (gadgetEvent == null)
+            {
+                gadgetId = null;
+                return false;
+            }
+
+            gadgetId = GadgetIds(gadgetEvent).FirstOrDefault();
+            return gadgetId == null;
         }
 
-        public static bool MapEventGadgets(this Requests.InputHandlerEventRequest request, string eventName,
+        public static bool TryMapEventGadgets(this Requests.InputHandlerEventRequest request, string eventName,
             out Dictionary<string, string> results, params string[] gadgetNames)
         {
-            results = null;
-            return false;
+            var gadgetEvent = request.Events.FirstOrDefault(e => e.Name == eventName);
+            if (gadgetEvent == null)
+            {
+                results = null;
+                return false;
+            }
+
+            var maxZip = Math.Min(GadgetIds(gadgetEvent).Count(), gadgetNames.Length);
+            results = gadgetNames.Take(maxZip).Zip(GadgetIds(gadgetEvent).Take(maxZip), (name, id) => Tuple.Create(name, id)).ToDictionary(a => a.Item1, a => a.Item2);
+            return results.Any();
         }
 
-
+        private static IEnumerable<string> GadgetIds(GadgetEvent request)
+        {
+            return request.InputEvents.Select(e => e.GadgetId).Distinct();
+        }
 
         private static void AddRollCallRecognisers(StartInputHandlerDirective directive, string[] names)
         {

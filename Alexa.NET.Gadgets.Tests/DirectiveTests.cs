@@ -180,9 +180,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallReturnFalseIfEventDoesntMatch()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent { Name = "timed out" } }
+                Events = new[] { new GadgetEvent { Name = "timed out" } }
             };
             Assert.False(((InputHandlerEventRequest)request.Request).TryRollCallResult(out Dictionary<string, string> results));
         }
@@ -191,9 +191,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallReturnTrueIfEventMatches()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                Events = new[] { new GadgetEvent {
                     Name = GameEngineExtensions.RollCallCompleteName ,
                                         InputEvents = new[]{
                         new InputEvent{GadgetId="first"},
@@ -208,9 +208,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallThrowsExceptionOnInputMismatch()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                Events = new[] { new GadgetEvent {
                     Name = GameEngineExtensions.RollCallCompleteName,
                     InputEvents = new[]{
                         new InputEvent{GadgetId="first"},
@@ -226,9 +226,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallGeneratesDictionaryWithValidData()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                Events = new[] { new GadgetEvent {
                     Name = GameEngineExtensions.RollCallCompleteName,
                     InputEvents = new[]{
                         new InputEvent{GadgetId="xxx"},
@@ -317,19 +317,49 @@ namespace Alexa.NET.Gadgets.Tests
         [Fact]
         public void SuccessfulTriggerEventFindsSingleGadget()
         {
-            throw new NotImplementedException();
+            var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
+            var result = ((InputHandlerEventRequest)request.Request).TryMapEventGadget("timed out", out var gadgetId);
+            Assert.False(result);
+            Assert.Equal("amzn1.ask.gadget.05RPH7PJ",gadgetId);
         }
 
         [Fact]
         public void SuccessfulTriggerEventFindsMultipleGadgets()
         {
-            throw new NotImplementedException();
+            var request = new SkillRequest
+            {
+                Request = new InputHandlerEventRequest
+                {
+                    Events = new[]
+                    {
+                        new GadgetEvent
+                        {
+                            Name = GameEngineExtensions.RollCallCompleteName,
+                            InputEvents = new[]
+                            {
+                                new InputEvent {GadgetId = "xxx"},
+                                new InputEvent {GadgetId = "yyy"}
+                            }
+                        }
+                    }
+                }
+            };
+
+            var result = ((InputHandlerEventRequest)request.Request).TryMapEventGadgets(GameEngineExtensions.RollCallCompleteName, out var results, "first", "second");
+            Assert.True(result);
+            Assert.Equal(2, results.Count);
+            Assert.Equal("xxx", results["first"]);
+            Assert.Equal("yyy", results["second"]);
+            
         }
 
         [Fact]
         public void IncorrectTriggerReturnsCorrectResponse()
         {
-            throw new NotImplementedException();
+            var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
+            var result = ((InputHandlerEventRequest) request.Request).TryMapEventGadget("eventName", out var gadgetId);
+            Assert.False(result);
+            Assert.Null(gadgetId);
         }
     }
 }
