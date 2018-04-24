@@ -259,10 +259,11 @@ namespace Alexa.NET.Gadgets.Tests
         {
             var gadget1 = "xxx";
             var gadget2 = "yyy";
-
             var response = new SkillResponse();
-            response.WhenFirstButtonDown(new[] { gadget1, gadget2 }, "eventName");
-            throw new NotImplementedException();
+            var result = response.WhenFirstButtonDown(new[] { gadget1, gadget2 }, "eventName", 10000);
+            Assert.NotNull(result);
+
+            AssertCreatedButtonDownTriggerFor(response, gadget1, gadget2);
         }
 
         [Fact]
@@ -275,8 +276,42 @@ namespace Alexa.NET.Gadgets.Tests
             };
 
             var response = new SkillResponse();
-            response.WhenFirstButtonDown(mapping, "eventName");
-            throw new NotImplementedException();
+            var result = response.WhenFirstButtonDown(mapping, "eventName", 10000);
+            Assert.NotNull(result);
+
+            AssertCreatedButtonDownTriggerFor(response, mapping.Values.ToArray());
+        }
+
+        private void AssertCreatedButtonDownTriggerFor(SkillResponse response, params string[] gadgetIds)
+        {
+            if (gadgetIds.Length == 0)
+                throw new ArgumentException("Value cannot be an empty collection.", nameof(gadgetIds));
+
+            Assert.Single(response.Response.Directives);
+            Assert.IsType<StartInputHandlerDirective>(response.Response.Directives.First());
+
+            var directive = (StartInputHandlerDirective)response.Response.Directives.First();
+            Assert.Equal(10000, directive.TimeoutMilliseconds);
+            Assert.Equal(2, directive.Events.Count);
+            Assert.Equal("timed out", directive.Events.First().Key);
+            Assert.Equal("eventName", directive.Events.Skip(1).First().Key);
+
+            var namedEvent = directive.Events["eventName"];
+            Assert.Single(namedEvent.Meets);
+            Assert.Equal("eventName", namedEvent.Meets.First());
+
+            Assert.Single(directive.Recognizers);
+            Assert.Equal("eventName", directive.Recognizers.First().Key);
+            Assert.IsType<PatternRecognizer>(directive.Recognizers.First().Value);
+
+            var recogniser = (PatternRecognizer)directive.Recognizers["eventName"];
+            Assert.Equal(gadgetIds.Length,recogniser.GadgetIds.Count);
+            Assert.True(recogniser.GadgetIds.All(g => gadgetIds.Contains(g)));
+
+            Assert.True(recogniser.Fuzzy);
+            Assert.Single(recogniser.Patterns);
+            Assert.Equal(ButtonAction.Down, recogniser.Patterns.First().Action);
+            Assert.Null(recogniser.Patterns.First().Repeat);
         }
 
         [Fact]

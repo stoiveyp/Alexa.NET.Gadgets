@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Alexa.NET.Response;
 using System.Linq;
 using Alexa.NET.Gadgets.GameEngine.Directives;
+using Alexa.NET.Gadgets.GameEngine.Requests;
 
 namespace Alexa.NET.Gadgets.GameEngine
 {
@@ -65,21 +66,39 @@ namespace Alexa.NET.Gadgets.GameEngine
             };
 
 
-            AddRollCallEvents(directive);
+            AddTimeOutAndEvent(directive, RollCallCompleteName);
             AddRollCallRecognisers(directive, friendlyNames);
             SetDirective(response, directive);
             response.Response.ShouldEndSession = null;
             return directive;
         }
 
-        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, string[] possibleGadgetIds, string triggerEventName)
+        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, Dictionary<string, string> gadgetNameIdMapping, string triggerEventName, int timeoutMilliseconds)
         {
-            return null;
+            return WhenFirstButtonDown(response, gadgetNameIdMapping.Values.ToArray(), triggerEventName,timeoutMilliseconds);
         }
 
-        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, Dictionary<string, string> gadgetNameIdMapping, string triggerEventName)
+        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, string[] possibleGadgetIds, string triggerEventName, int timeoutMilliseconds)
         {
-            return null;
+            var directive = new StartInputHandlerDirective {TimeoutMilliseconds = timeoutMilliseconds};
+            AddTimeOutAndEvent(directive, triggerEventName);
+            AddButtonDownTrigger(directive, triggerEventName, possibleGadgetIds);
+
+            SetDirective(response,directive);
+            return directive;
+        }
+
+        private static void AddButtonDownTrigger(StartInputHandlerDirective directive, string triggerEventName, string[] possibleGadgetIds)
+        {
+            var recogniser = new PatternRecognizer
+            {
+                GadgetIds = possibleGadgetIds.ToList(),
+                Fuzzy = true
+            };
+
+            recogniser.Patterns.Add(new Pattern{Action = ButtonAction.Down});
+
+            directive.Recognizers.Add(triggerEventName,recogniser);
         }
 
         public static bool MapEventGadgets(this Requests.InputHandlerEventRequest request, string eventName, out string gadgetId)
@@ -122,7 +141,7 @@ namespace Alexa.NET.Gadgets.GameEngine
             };
         }
 
-        private static void AddRollCallEvents(StartInputHandlerDirective directive)
+        private static void AddTimeOutAndEvent(StartInputHandlerDirective directive, string eventName, string meetTrigger = null)
         {
             directive.Events.Add("timed out", new InputHandlerEvent
             {
@@ -131,9 +150,9 @@ namespace Alexa.NET.Gadgets.GameEngine
                 Reports = GadgetEventReportType.History
             });
 
-            directive.Events.Add(RollCallCompleteName, new InputHandlerEvent
+            directive.Events.Add(eventName, new InputHandlerEvent
             {
-                Meets = new List<string> { RollCallCompleteName },
+                Meets = new List<string> { meetTrigger ?? eventName },
                 EndInputHandler = true,
                 Reports = GadgetEventReportType.Matches
             });
