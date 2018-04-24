@@ -7,7 +7,8 @@
     <Authors>Steven Pears</Authors>
     <Product />
     <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
-    <PackageReleaseNotes>change to NetStandard Library 1.6.0 for consistency with Alexa.NET</PackageReleaseNotes>
+    <PackageReleaseNotes>Add helper methods for "first button down" scenario (such as buzzing in for a question)
+Add helper methods to match gadgetIds with triggered events (finding out which gadget buzzed in first)</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple package built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
     <PackageLicenseUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets/blob/master/LICENSE</PackageLicenseUrl>

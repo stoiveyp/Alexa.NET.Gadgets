@@ -126,3 +126,45 @@ switch(skillRequest.Request)
       inputHandler.TryRollCallOptionalResult(out Dictionary<string,string> mapping, "first","second");
 }
 ```
+
+## In Game - find out which gadget is pressed down first
+Adds a directive which triggers a InputHandlerEventRequest when any of the mentioned buttons is pressed.
+
+The triggered event is given the name passed in (in this case buzzedIn)
+
+```csharp
+using Alexa.NET.Gadgets.GameEngine
+...
+response.WhenFirstButtonDown(new[] { gadget1, gadget2 }, "buzzedIn", 10000);
+```
+
+_this can also be done with a roll call result_:
+
+```csharp
+using Alexa.NET.Gadgets.GameEngine
+...
+switch(skillRequest.Request)
+{
+    case InputHandlerEventRequest inputHandler:
+      if(inputHandler.TryRollCallOptionalResult(out Dictionary<string,string> mapping, "first","second"))
+      {
+        response.WhenFirstButtonDown(mapping, "buzzedIn", 10000);
+      }
+}
+```
+
+
+## In Game - find out which gadget pressed first
+When an InputHandlerEventRequest is identified, this will see if the named event is found and what the gadget that triggered it was
+```csharp
+using Alexa.NET.Gadgets.GameEngine
+...
+switch(skillRequest.Request)
+{
+    case InputHandlerEventRequest inputHandler:
+      if(inputHandler.TryMapEventGadget("buzzedIn", out var gadgetId))
+      {
+        //Perform logic based on who buzzed in
+      }
+}
+```

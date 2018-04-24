@@ -180,9 +180,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallReturnFalseIfEventDoesntMatch()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent { Name = "timed out" } }
+                Events = new[] { new GadgetEvent { Name = "timed out" } }
             };
             Assert.False(((InputHandlerEventRequest)request.Request).TryRollCallResult(out Dictionary<string, string> results));
         }
@@ -191,9 +191,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallReturnTrueIfEventMatches()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                Events = new[] { new GadgetEvent {
                     Name = GameEngineExtensions.RollCallCompleteName ,
                                         InputEvents = new[]{
                         new InputEvent{GadgetId="first"},
@@ -208,9 +208,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallThrowsExceptionOnInputMismatch()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                Events = new[] { new GadgetEvent {
                     Name = GameEngineExtensions.RollCallCompleteName,
                     InputEvents = new[]{
                         new InputEvent{GadgetId="first"},
@@ -226,9 +226,9 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallGeneratesDictionaryWithValidData()
         {
             var request = new SkillRequest();
-            request.Request = new Gadgets.GameEngine.Requests.InputHandlerEventRequest
+            request.Request = new InputHandlerEventRequest
             {
-                Events = new[] { new GameEngine.Requests.GadgetEvent {
+                Events = new[] { new GadgetEvent {
                     Name = GameEngineExtensions.RollCallCompleteName,
                     InputEvents = new[]{
                         new InputEvent{GadgetId="xxx"},
@@ -247,11 +247,119 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallGeneratesPartialDictionaryWithOptional()
         {
             var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
-            var result = ((InputHandlerEventRequest)request.Request).TryRollCallOptionalResult(out Dictionary<string,string> mapping, "first", "second","third","fourth");
+            var result = ((InputHandlerEventRequest)request.Request).TryRollCallOptionalResult(out Dictionary<string, string> mapping, "first", "second", "third", "fourth");
             Assert.True(result);
-            Assert.Equal(2,mapping.Count);
-            Assert.Equal("amzn1.ask.gadget.05RPH7PJ",mapping["first"]);
+            Assert.Equal(2, mapping.Count);
+            Assert.Equal("amzn1.ask.gadget.05RPH7PJ", mapping["first"]);
             Assert.Equal("amzn1.ask.gadget.05RP0000", mapping["second"]);
+        }
+
+        [Fact]
+        public void TriggerWhenButtonDownGadgetIdArrayGeneratesCorrectly()
+        {
+            var gadget1 = "xxx";
+            var gadget2 = "yyy";
+            var response = new SkillResponse();
+            var result = response.WhenFirstButtonDown(new[] { gadget1, gadget2 }, "eventName", 10000);
+            Assert.NotNull(result);
+
+            AssertCreatedButtonDownTriggerFor(response, gadget1, gadget2);
+        }
+
+        [Fact]
+        public void TriggerWhenButtonDownMappingDictionaryGeneratesCorrectly()
+        {
+            var mapping = new Dictionary<string, string>
+            {
+                {"gadget1", "xxx"},
+                {"gadget2", "yyy"},
+            };
+
+            var response = new SkillResponse();
+            var result = response.WhenFirstButtonDown(mapping, "eventName", 10000);
+            Assert.NotNull(result);
+
+            AssertCreatedButtonDownTriggerFor(response, mapping.Values.ToArray());
+        }
+
+        private void AssertCreatedButtonDownTriggerFor(SkillResponse response, params string[] gadgetIds)
+        {
+            if (gadgetIds.Length == 0)
+                throw new ArgumentException("Value cannot be an empty collection.", nameof(gadgetIds));
+
+            Assert.Single(response.Response.Directives);
+            Assert.IsType<StartInputHandlerDirective>(response.Response.Directives.First());
+
+            var directive = (StartInputHandlerDirective)response.Response.Directives.First();
+            Assert.Equal(10000, directive.TimeoutMilliseconds);
+            Assert.Equal(2, directive.Events.Count);
+            Assert.Equal("timed out", directive.Events.First().Key);
+            Assert.Equal("eventName", directive.Events.Skip(1).First().Key);
+
+            var namedEvent = directive.Events["eventName"];
+            Assert.Single(namedEvent.Meets);
+            Assert.Equal("eventName", namedEvent.Meets.First());
+
+            Assert.Single(directive.Recognizers);
+            Assert.Equal("eventName", directive.Recognizers.First().Key);
+            Assert.IsType<PatternRecognizer>(directive.Recognizers.First().Value);
+
+            var recogniser = (PatternRecognizer)directive.Recognizers["eventName"];
+            Assert.Equal(gadgetIds.Length,recogniser.GadgetIds.Count);
+            Assert.True(recogniser.GadgetIds.All(g => gadgetIds.Contains(g)));
+
+            Assert.True(recogniser.Fuzzy);
+            Assert.Single(recogniser.Patterns);
+            Assert.Equal(ButtonAction.Down, recogniser.Patterns.First().Action);
+            Assert.Null(recogniser.Patterns.First().Repeat);
+        }
+
+        [Fact]
+        public void SuccessfulTriggerEventFindsSingleGadget()
+        {
+            var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
+            var result = ((InputHandlerEventRequest)request.Request).TryMapEventGadget("timed out", out var gadgetId);
+            Assert.False(result);
+            Assert.Equal("amzn1.ask.gadget.05RPH7PJ",gadgetId);
+        }
+
+        [Fact]
+        public void SuccessfulTriggerEventFindsMultipleGadgets()
+        {
+            var request = new SkillRequest
+            {
+                Request = new InputHandlerEventRequest
+                {
+                    Events = new[]
+                    {
+                        new GadgetEvent
+                        {
+                            Name = GameEngineExtensions.RollCallCompleteName,
+                            InputEvents = new[]
+                            {
+                                new InputEvent {GadgetId = "xxx"},
+                                new InputEvent {GadgetId = "yyy"}
+                            }
+                        }
+                    }
+                }
+            };
+
+            var result = ((InputHandlerEventRequest)request.Request).TryMapEventGadgets(GameEngineExtensions.RollCallCompleteName, out var results, "first", "second");
+            Assert.True(result);
+            Assert.Equal(2, results.Count);
+            Assert.Equal("xxx", results["first"]);
+            Assert.Equal("yyy", results["second"]);
+            
+        }
+
+        [Fact]
+        public void IncorrectTriggerReturnsCorrectResponse()
+        {
+            var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
+            var result = ((InputHandlerEventRequest) request.Request).TryMapEventGadget("eventName", out var gadgetId);
+            Assert.False(result);
+            Assert.Null(gadgetId);
         }
     }
 }

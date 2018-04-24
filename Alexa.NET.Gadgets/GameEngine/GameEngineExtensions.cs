@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Alexa.NET.Response;
 using System.Linq;
 using Alexa.NET.Gadgets.GameEngine.Directives;
+using Alexa.NET.Gadgets.GameEngine.Requests;
 
 namespace Alexa.NET.Gadgets.GameEngine
 {
@@ -11,7 +12,7 @@ namespace Alexa.NET.Gadgets.GameEngine
         public const string RollCallCompleteName = "rollcall complete";
         private const string TimedOutName = "timed out";
 
-        public static bool TryRollCallOptionalResult(this GameEngine.Requests.InputHandlerEventRequest request, out Dictionary<string, string> results, params string[] gadgetNames)
+        public static bool TryRollCallOptionalResult(this InputHandlerEventRequest request, out Dictionary<string, string> results, params string[] gadgetNames)
         {
             var rollcallEvent = request.Events.FirstOrDefault();
 
@@ -34,11 +35,11 @@ namespace Alexa.NET.Gadgets.GameEngine
 
             var gadgetIds = rollcallEvent.InputEvents.Where(e => e.Action == PatternAction.Down).Select(e => e.GadgetId).Distinct().ToArray();
             var maxZip = Math.Min(gadgetIds.Length, gadgetNames.Length);
-            results = gadgetNames.Take(maxZip).Zip(gadgetIds.Take(maxZip),(name, id) => Tuple.Create(name,id)).ToDictionary(a => a.Item1, a => a.Item2);
+            results = gadgetNames.Take(maxZip).Zip(gadgetIds.Take(maxZip),Tuple.Create).ToDictionary(a => a.Item1, a => a.Item2);
             return true;
         }
 
-        public static bool TryRollCallResult(this GameEngine.Requests.InputHandlerEventRequest request, out Dictionary<string, string> results, params string[] gadgetNames)
+        public static bool TryRollCallResult(this InputHandlerEventRequest request, out Dictionary<string, string> results, params string[] gadgetNames)
         {
             results = null;
             var rollcallEvent = request.Events.FirstOrDefault(ge => ge.Name == RollCallCompleteName);
@@ -52,7 +53,7 @@ namespace Alexa.NET.Gadgets.GameEngine
                 throw new InvalidOperationException($"Gadget Mismatch - roll call event has returned {rollcallEvent.InputEvents.Length} events and there are {gadgetNames.Length} names");
             }
 
-            results = gadgetNames.Zip(rollcallEvent.InputEvents, (name, inputEvent) => new { name = name, id = inputEvent.GadgetId }).ToDictionary(a => a.name, a => a.id);
+            results = gadgetNames.Zip(rollcallEvent.InputEvents, (name, inputEvent) => new {name, id = inputEvent.GadgetId }).ToDictionary(a => a.name, a => a.id);
             return true;
         }
 
@@ -65,14 +66,75 @@ namespace Alexa.NET.Gadgets.GameEngine
             };
 
 
-            AddEvents(directive);
-            AddRecognisers(directive, friendlyNames);
+            AddTimeOutAndEvent(directive, RollCallCompleteName);
+            AddRollCallRecognisers(directive, friendlyNames);
             SetDirective(response, directive);
             response.Response.ShouldEndSession = null;
             return directive;
         }
 
-        private static void AddRecognisers(StartInputHandlerDirective directive, string[] names)
+        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, Dictionary<string, string> gadgetNameIdMapping, string triggerEventName, int timeoutMilliseconds)
+        {
+            return WhenFirstButtonDown(response, gadgetNameIdMapping.Values.ToArray(), triggerEventName,timeoutMilliseconds);
+        }
+
+        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, string[] possibleGadgetIds, string triggerEventName, int timeoutMilliseconds)
+        {
+            var directive = new StartInputHandlerDirective {TimeoutMilliseconds = timeoutMilliseconds};
+            AddTimeOutAndEvent(directive, triggerEventName);
+            AddButtonDownTrigger(directive, triggerEventName, possibleGadgetIds);
+
+            SetDirective(response,directive);
+            return directive;
+        }
+
+        private static void AddButtonDownTrigger(StartInputHandlerDirective directive, string triggerEventName, string[] possibleGadgetIds)
+        {
+            var recogniser = new PatternRecognizer
+            {
+                GadgetIds = possibleGadgetIds.ToList(),
+                Fuzzy = true
+            };
+
+            recogniser.Patterns.Add(new Pattern{Action = ButtonAction.Down});
+
+            directive.Recognizers.Add(triggerEventName,recogniser);
+        }
+
+        public static bool TryMapEventGadget(this InputHandlerEventRequest request, string eventName, out string gadgetId)
+        {
+            var gadgetEvent = request.Events.FirstOrDefault(e => e.Name == eventName);
+            if (gadgetEvent == null)
+            {
+                gadgetId = null;
+                return false;
+            }
+
+            gadgetId = GadgetIds(gadgetEvent).FirstOrDefault();
+            return gadgetId == null;
+        }
+
+        public static bool TryMapEventGadgets(this InputHandlerEventRequest request, string eventName,
+            out Dictionary<string, string> results, params string[] gadgetNames)
+        {
+            var gadgetEvent = request.Events.FirstOrDefault(e => e.Name == eventName);
+            if (gadgetEvent == null)
+            {
+                results = null;
+                return false;
+            }
+
+            var maxZip = Math.Min(GadgetIds(gadgetEvent).Count(), gadgetNames.Length);
+            results = gadgetNames.Take(maxZip).Zip(GadgetIds(gadgetEvent).Take(maxZip), Tuple.Create).ToDictionary(a => a.Item1, a => a.Item2);
+            return results.Any();
+        }
+
+        private static IEnumerable<string> GadgetIds(GadgetEvent request)
+        {
+            return request.InputEvents.Select(e => e.GadgetId).Distinct();
+        }
+
+        private static void AddRollCallRecognisers(StartInputHandlerDirective directive, string[] names)
         {
             var recogniser = new PatternRecognizer
             {
@@ -83,12 +145,12 @@ namespace Alexa.NET.Gadgets.GameEngine
 
             foreach (var name in names)
             {
-                var pattern = CreatePattern(name);
+                var pattern = CreateRollCallPattern(name);
                 recogniser.Patterns.Add(pattern);
             }
         }
 
-        private static Pattern CreatePattern(string name)
+        private static Pattern CreateRollCallPattern(string name)
         {
             return new Pattern
             {
@@ -97,7 +159,7 @@ namespace Alexa.NET.Gadgets.GameEngine
             };
         }
 
-        private static void AddEvents(StartInputHandlerDirective directive)
+        private static void AddTimeOutAndEvent(StartInputHandlerDirective directive, string eventName, string meetTrigger = null)
         {
             directive.Events.Add("timed out", new InputHandlerEvent
             {
@@ -106,9 +168,9 @@ namespace Alexa.NET.Gadgets.GameEngine
                 Reports = GadgetEventReportType.History
             });
 
-            directive.Events.Add(RollCallCompleteName, new InputHandlerEvent
+            directive.Events.Add(eventName, new InputHandlerEvent
             {
-                Meets = new List<string> { RollCallCompleteName },
+                Meets = new List<string> { meetTrigger ?? eventName },
                 EndInputHandler = true,
                 Reports = GadgetEventReportType.Matches
             });
@@ -119,7 +181,7 @@ namespace Alexa.NET.Gadgets.GameEngine
         {
             if (response == null)
             {
-                throw new InvalidOperationException("Unable to set gadget colors on null response");
+                throw new InvalidOperationException("Unable to set directive on null response");
             }
 
             if (response.Response == null)
