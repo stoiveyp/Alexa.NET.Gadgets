@@ -247,11 +247,54 @@ namespace Alexa.NET.Gadgets.Tests
         public void TryRollCallGeneratesPartialDictionaryWithOptional()
         {
             var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
-            var result = ((InputHandlerEventRequest)request.Request).TryRollCallOptionalResult(out Dictionary<string,string> mapping, "first", "second","third","fourth");
+            var result = ((InputHandlerEventRequest)request.Request).TryRollCallOptionalResult(out Dictionary<string, string> mapping, "first", "second", "third", "fourth");
             Assert.True(result);
-            Assert.Equal(2,mapping.Count);
-            Assert.Equal("amzn1.ask.gadget.05RPH7PJ",mapping["first"]);
+            Assert.Equal(2, mapping.Count);
+            Assert.Equal("amzn1.ask.gadget.05RPH7PJ", mapping["first"]);
             Assert.Equal("amzn1.ask.gadget.05RP0000", mapping["second"]);
+        }
+
+        [Fact]
+        public void TriggerWhenButtonDownGadgetIdArrayGeneratesCorrectly()
+        {
+            var gadget1 = "xxx";
+            var gadget2 = "yyy";
+
+            var response = new SkillResponse();
+            response.WhenFirstButtonDown(new[] { gadget1, gadget2 }, "eventName");
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TriggerWhenButtonDownMappingDictionaryGeneratesCorrectly()
+        {
+            var mapping = new Dictionary<string, string>
+            {
+                {"gadget1", "xxx"},
+                {"gadget2", "yyy"},
+            };
+
+            var response = new SkillResponse();
+            response.WhenFirstButtonDown(mapping, "eventName");
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void SuccessfulTriggerEventFindsSingleGadget()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void SuccessfulTriggerEventFindsMultipleGadgets()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void IncorrectTriggerReturnsCorrectResponse()
+        {
+            throw new NotImplementedException();
         }
     }
 }

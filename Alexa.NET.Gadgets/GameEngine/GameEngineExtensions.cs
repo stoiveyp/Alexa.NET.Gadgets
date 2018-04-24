@@ -65,14 +65,39 @@ namespace Alexa.NET.Gadgets.GameEngine
             };
 
 
-            AddEvents(directive);
-            AddRecognisers(directive, friendlyNames);
+            AddRollCallEvents(directive);
+            AddRollCallRecognisers(directive, friendlyNames);
             SetDirective(response, directive);
             response.Response.ShouldEndSession = null;
             return directive;
         }
 
-        private static void AddRecognisers(StartInputHandlerDirective directive, string[] names)
+        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, string[] possibleGadgetIds, string triggerEventName)
+        {
+            return null;
+        }
+
+        public static StartInputHandlerDirective WhenFirstButtonDown(this SkillResponse response, Dictionary<string, string> gadgetNameIdMapping, string triggerEventName)
+        {
+            return null;
+        }
+
+        public static bool MapEventGadgets(this Requests.InputHandlerEventRequest request, string eventName, out string gadgetId)
+        {
+            gadgetId = null;
+            return false;
+        }
+
+        public static bool MapEventGadgets(this Requests.InputHandlerEventRequest request, string eventName,
+            out Dictionary<string, string> results, params string[] gadgetNames)
+        {
+            results = null;
+            return false;
+        }
+
+
+
+        private static void AddRollCallRecognisers(StartInputHandlerDirective directive, string[] names)
         {
             var recogniser = new PatternRecognizer
             {
@@ -83,12 +108,12 @@ namespace Alexa.NET.Gadgets.GameEngine
 
             foreach (var name in names)
             {
-                var pattern = CreatePattern(name);
+                var pattern = CreateRollCallPattern(name);
                 recogniser.Patterns.Add(pattern);
             }
         }
 
-        private static Pattern CreatePattern(string name)
+        private static Pattern CreateRollCallPattern(string name)
         {
             return new Pattern
             {
@@ -97,7 +122,7 @@ namespace Alexa.NET.Gadgets.GameEngine
             };
         }
 
-        private static void AddEvents(StartInputHandlerDirective directive)
+        private static void AddRollCallEvents(StartInputHandlerDirective directive)
         {
             directive.Events.Add("timed out", new InputHandlerEvent
             {
@@ -119,7 +144,7 @@ namespace Alexa.NET.Gadgets.GameEngine
         {
             if (response == null)
             {
-                throw new InvalidOperationException("Unable to set gadget colors on null response");
+                throw new InvalidOperationException("Unable to set directive on null response");
             }
 
             if (response.Response == null)
