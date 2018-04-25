@@ -317,6 +317,7 @@ namespace Alexa.NET.Gadgets.Tests
         [Fact]
         public void SuccessfulTriggerEventFindsSingleGadget()
         {
+            RequestConverterHelper.AddGadgetRequests();
             var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
             var result = ((InputHandlerEventRequest)request.Request).TryMapEventGadget("timed out", out var gadgetId);
             Assert.True(result);
