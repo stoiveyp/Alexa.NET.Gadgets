@@ -319,7 +319,7 @@ namespace Alexa.NET.Gadgets.Tests
         {
             var request = Utility.ExampleFileContent<SkillRequest>("TimedOutGadgets.json");
             var result = ((InputHandlerEventRequest)request.Request).TryMapEventGadget("timed out", out var gadgetId);
-            Assert.False(result);
+            Assert.True(result);
             Assert.Equal("amzn1.ask.gadget.05RPH7PJ",gadgetId);
         }
 
