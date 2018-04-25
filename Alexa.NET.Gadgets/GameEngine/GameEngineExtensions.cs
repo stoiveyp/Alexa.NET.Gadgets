@@ -111,7 +111,7 @@ namespace Alexa.NET.Gadgets.GameEngine
             }
 
             gadgetId = GadgetIds(gadgetEvent).FirstOrDefault();
-            return gadgetId == null;
+            return gadgetId != null;
         }
 
         public static bool TryMapEventGadgets(this InputHandlerEventRequest request, string eventName,
