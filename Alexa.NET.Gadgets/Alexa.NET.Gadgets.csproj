@@ -1,23 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
-    <Company />
-    <Version>1.0</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.4.0</Version>
     <Authors>Steven Pears</Authors>
-    <Product />
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
-    <PackageReleaseNotes>Fixed helper methods for "first button down" scenario (such as buzzing in for a question)
-Add helper methods to match gadgetIds with triggered events (finding out which gadget buzzed in first)</PackageReleaseNotes>
+    <PackageReleaseNotes>update to netstandard2.0</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple package built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
-    <PackageLicenseUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets</PackageProjectUrl>
     <RepositoryUrl>https://github.com/stoiveyp/Alexa.NET.Gadgets</RepositoryUrl>
     <PackageTags>amazon;alexa;echo;dot;echo dot;gadgets</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alexa.NET" Version="1.5.1" />
+    <PackageReference Include="Alexa.NET" Version="1.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Alexa.NET.ProactiveEvents\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 </Project>
