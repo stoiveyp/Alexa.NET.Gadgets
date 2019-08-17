@@ -16,4 +16,4 @@ jobs:
       - name: Test Solution
         run:  dotnet test
       - name: Deploy Solution
-        run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/release/Alexa.NET*.nupkg -k {{ secrets.NUGET_KEY }}
+        run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/release/Alexa.NET*.nupkg -k {{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
