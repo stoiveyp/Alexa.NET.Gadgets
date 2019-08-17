@@ -12,6 +12,8 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
       - name: Build Solution
-        run:  dotnet build
+        run:  dotnet build -c Release
       - name: Test Solution
         run:  dotnet test
+      - name: Deploy Solution
+        run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/release/Alexa.NET*.nupkg -k {{ secrets.NUGET_KEY }}
