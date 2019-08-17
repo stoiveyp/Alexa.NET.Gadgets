@@ -11,10 +11,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
-      - name: Build & Test Solution
-        run:  dotnet build && 
-              dotnet test
-      - name: Deploy project
-        env:
-          NUGET_KEY: ${{ secrets.NUGET_KEY }}
-        run: echo "build complete"
+      - name: Build Solution
+        run:  dotnet build
+      - name: Test Solution
+        run:  dotnet test
