@@ -1,8 +1,8 @@
 name: Build and Test
-on: push
-push:
-  branches:
-  - master
+on:
+  push:
+    branches:
+    - master
 jobs:
   runner:
     name: Package Pipeline
