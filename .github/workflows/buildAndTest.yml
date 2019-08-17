@@ -1,0 +1,20 @@
+name: Build and Test
+on:
+  push:
+    branches:
+    - master
+jobs:
+  runner:
+    name: Package Pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+      - name: Build & Test Solution
+        run:  dotnet build && 
+              dotnet test
+      - name: Deploy project
+        env:
+          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+        run: echo "build complete"
