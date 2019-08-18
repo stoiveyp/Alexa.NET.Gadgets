@@ -153,7 +153,6 @@ switch(skillRequest.Request)
 }
 ```
 
-
 ## In Game - find out which gadget pressed first
 When an InputHandlerEventRequest is identified, this will see if the named event is found and what the gadget that triggered it was
 ```csharp
@@ -167,4 +166,35 @@ switch(skillRequest.Request)
         //Perform logic based on who buzzed in
       }
 }
+```
+
+# Custom Interface Support
+
+## Get endpoints
+```csharp
+  var api = new EndpointApi(skillRequest);
+  var endpoints = await api.GetEndpoints();
+```
+
+## Send Interface Directive
+```csharp
+  SendDirective.AddToDirectiveConverter(); //Only if you're deserializing directives from JSON
+  var directive = new SendDirective(endpointId, interfaceNamespace, interfaceName, customPayload);
+  skillResponse.Response.AddDirective(directive);
+```
+
+## Start Monitoring Interface Events
+```csharp
+
+```
+
+
+## Receive Interface Events
+```csharp
+
+```
+
+## Stop Monitoring Interface Events
+```csharp
+
 ```
