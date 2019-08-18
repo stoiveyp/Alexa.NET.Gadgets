@@ -81,14 +81,19 @@ namespace Alexa.NET.Gadgets.Tests
         public void StartHandlerSerializesCorrectly()
         {
             StartEventHandler.AddToDirectiveConverter();
-            var directive = Utility.ExampleFileContent<StartEventHandler>("StartEventHandler.json");
+            var directive = Utility.ExampleFileContent<IDirective>("StartEventHandler.json");
             var start = Assert.IsType<StartEventHandler>(directive);
+
+
         }
 
         [Fact]
         public void StopHandlerSerializesCorrectly()
         {
-            Assert.True(false);
+            StopEventHandler.AddToDirectiveConverter();
+            var directive = Utility.ExampleFileContent<IDirective>("StopEventHandler.json");
+            var stop = Assert.IsType<StopEventHandler>(directive);
+            Assert.Equal("1234abcd-40bb-11e9-9527-6b98b093d166", stop.Token);
         }
     }
 }
