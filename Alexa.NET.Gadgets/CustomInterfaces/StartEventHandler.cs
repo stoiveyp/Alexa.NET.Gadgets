@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Alexa.NET.Response;
 using Alexa.NET.Response.Converters;
@@ -19,9 +20,25 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
             }
         }
 
+        public StartEventHandler() { }
+
+        public StartEventHandler(Guid token, Expiration expiration, FilterMatchAction action, FilterExpression expression)
+        {
+            Token = token;
+            Expiration = expiration;
+            EventFilter = new EventFilter(expression, action);
+        }
+
+        [JsonProperty("type")]
         public string Type => DirectiveType;
 
         [JsonProperty("token")]
-        public string Token { get; set; }
+        public Guid Token { get; set; }
+
+        [JsonProperty("expiration")]
+        public Expiration Expiration { get; set; }
+
+        [JsonProperty("eventFilter")]
+        public EventFilter EventFilter { get; set; } 
     }
 }

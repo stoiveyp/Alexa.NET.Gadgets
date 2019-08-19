@@ -17,9 +17,9 @@
           ]
         },
         {
-          "==": [
-            { "var": "endpoint.endpointId" },
-            "amzn1.ask.endpoint.ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+          ">": [
+            { "var": "payload.angle" },
+            10
           ]
         }
       ]

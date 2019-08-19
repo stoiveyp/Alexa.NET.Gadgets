@@ -81,9 +81,34 @@ namespace Alexa.NET.Gadgets.Tests
         public void StartHandlerSerializesCorrectly()
         {
             StartEventHandler.AddToDirectiveConverter();
+
+            const string gameOverText = "Game over! Would you like to hear your stats?";
+            var token = Guid.Parse("1234abcd-40bb-11e9-9527-6b98b093d166");
+            var expected = new StartEventHandler(
+                token,
+                new Expiration(8000, new {gameOverSpeech=gameOverText}),
+                FilterMatchAction.SendAndTerminate,
+                new CombinedFilterExpression(
+                    CombinationOperator.And,
+                    new ComparisonFilterExpression(ComparisonOperator.Equals, "header.namespace", "Custom.Robot"),
+                    new ComparisonFilterExpression(ComparisonOperator.GreaterThan, "payload.angle", 10)
+                        )
+            );
+
+            //remove token due to DeepEquals Guid mismatch
+            Assert.True(Utility.CompareJson(expected, "StartEventHandler.json","token"));
+
             var directive = Utility.ExampleFileContent<IDirective>("StartEventHandler.json");
             var start = Assert.IsType<StartEventHandler>(directive);
 
+            Assert.NotNull(start.Expiration);
+            Assert.Equal(token, start.Token);
+            Assert.Equal(8000,start.Expiration.Milliseconds);
+
+            var payload = Assert.IsType<JObject>(start.Expiration.Payload);
+            Assert.Equal(gameOverText, payload.Value<string>("gameOverSpeech"));
+
+            Assert.Equal(FilterMatchAction.SendAndTerminate,start.EventFilter.FilterMatchAction);
 
         }
 
@@ -93,7 +118,7 @@ namespace Alexa.NET.Gadgets.Tests
             StopEventHandler.AddToDirectiveConverter();
             var directive = Utility.ExampleFileContent<IDirective>("StopEventHandler.json");
             var stop = Assert.IsType<StopEventHandler>(directive);
-            Assert.Equal("1234abcd-40bb-11e9-9527-6b98b093d166", stop.Token);
+            Assert.Equal(Guid.Parse("1234abcd-40bb-11e9-9527-6b98b093d166"), stop.Token);
         }
     }
 }

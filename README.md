@@ -185,7 +185,17 @@ switch(skillRequest.Request)
 
 ## Start Monitoring Interface Events
 ```csharp
-
+  var token = guid.NewGuid();
+  var directive = new StartEventHandler(
+    token,
+	new Expiration(8000,new {data="randomData"}),
+	FilterMatchAction.SendAndTerminate,
+	new MultiEventFilter(
+	  "and",
+	  new SimpleEventFilter(">","payload.Angle",10),
+	  new SimpleEventFilter("==","header.Namespace","Robot")
+	)
+  )
 ```
 
 
@@ -196,5 +206,6 @@ switch(skillRequest.Request)
 
 ## Stop Monitoring Interface Events
 ```csharp
-
+  var directive = new StopEventHandler(tokenFromStartHandler);
+  skillResponse.Response.AddDirective(directive);
 ```

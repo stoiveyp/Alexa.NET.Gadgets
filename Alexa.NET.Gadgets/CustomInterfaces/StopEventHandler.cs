@@ -1,4 +1,5 @@
-﻿using Alexa.NET.Response;
+﻿using System;
+using Alexa.NET.Response;
 using Alexa.NET.Response.Converters;
 using Newtonsoft.Json;
 
@@ -16,9 +17,17 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
             }
         }
 
+        public StopEventHandler() { }
+
+        public StopEventHandler(Guid token)
+        {
+            Token = token;
+        }
+
+        [JsonProperty("type")]
         public string Type => DirectiveType;
 
         [JsonProperty("token")]
-        public string Token { get; set; }
+        public Guid Token { get; set; }
     }
 }
