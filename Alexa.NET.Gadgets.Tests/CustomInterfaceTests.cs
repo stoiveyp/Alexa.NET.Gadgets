@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Alexa.NET.Gadgets.CustomInterfaces;
+using Alexa.NET.Request;
 using Alexa.NET.Response;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -110,6 +111,12 @@ namespace Alexa.NET.Gadgets.Tests
 
             Assert.Equal(FilterMatchAction.SendAndTerminate,start.EventFilter.FilterMatchAction);
 
+            var combined = Assert.IsType<CombinedFilterExpression>(start.EventFilter.FilterExpression);
+            Assert.Equal(2,combined.Filters.Length);
+            Assert.True(combined.Filters.All(f => f is ComparisonFilterExpression));
+            var last = combined.Filters.Cast<ComparisonFilterExpression>().Last();
+            Assert.Equal((Int64)10,last.Value);
+            Assert.Equal("payload.angle",last.Variable);
         }
 
         [Fact]
@@ -119,6 +126,25 @@ namespace Alexa.NET.Gadgets.Tests
             var directive = Utility.ExampleFileContent<IDirective>("StopEventHandler.json");
             var stop = Assert.IsType<StopEventHandler>(directive);
             Assert.Equal(Guid.Parse("1234abcd-40bb-11e9-9527-6b98b093d166"), stop.Token);
+        }
+
+        [Fact]
+        public void EventReceivedRequest()
+        {
+            new CustomInterfaceHandler().AddToRequestConverter();
+            var skillRequest = Utility.ExampleFileContent<SkillRequest>("EventsReceived.json");
+            var request = Assert.IsType<EventsReceivedRequest>(skillRequest.Request);
+
+            Assert.Equal("1234abcd-40bb-11e9-9527-6b98b093d166",request.Token.ToString());
+            var foundEvent = Assert.Single(request.Events);
+
+            Assert.Equal("Custom.Robot",foundEvent.Header.Namespace);
+            Assert.Equal("EyeBlink",foundEvent.Header.Name);
+            Assert.Equal("amzn1.ask.endpoint.ABCD",foundEvent.Endpoint.EndpointId);
+
+            var payload = foundEvent.Payload as JObject;
+            Assert.Equal("ok",payload.Value<string>("ack"));
+
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
         }
 
         public FilterExpression[] Filters { get; set; }
-        public override IEnumerable<object> ArrayItems()
+        internal override IEnumerable<object> ArrayItems()
         {
             return Filters;
         }

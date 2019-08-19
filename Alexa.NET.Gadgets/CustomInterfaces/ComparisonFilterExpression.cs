@@ -18,7 +18,7 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
         public object Value { get; set; }
 
         public string Variable { get; set; }
-        public override IEnumerable<object> ArrayItems()
+        internal override IEnumerable<object> ArrayItems()
         {
             return new[] {new VariableContainer {Variable = Variable}, Value};
         }

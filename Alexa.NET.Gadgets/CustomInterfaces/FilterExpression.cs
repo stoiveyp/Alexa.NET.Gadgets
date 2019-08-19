@@ -30,6 +30,6 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
     public abstract class FilterExpression
     {
         internal abstract string GetOperator();
-        public abstract IEnumerable<object> ArrayItems();
+        internal abstract IEnumerable<object> ArrayItems();
     }
 }

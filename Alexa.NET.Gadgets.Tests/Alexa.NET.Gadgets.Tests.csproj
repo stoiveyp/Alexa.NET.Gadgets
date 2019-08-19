@@ -21,6 +21,9 @@
       <None Update="Examples\Endpoints.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Examples\EventsReceived.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Examples\SendDirective.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

@@ -185,6 +185,7 @@ switch(skillRequest.Request)
 
 ## Start Monitoring Interface Events
 ```csharp
+   StartEventHandler.AddToDirectiveConverter(); //As before - if deserializing
    const string gameOverText = "Game over! Would you like to hear your stats?";
    var token = Guid.Parse("1234abcd-40bb-11e9-9527-6b98b093d166");
    var expected = new StartEventHandler(
@@ -202,11 +203,16 @@ switch(skillRequest.Request)
 
 ## Receive Interface Events
 ```csharp
+  new CustomInterfaceHandler().AddToRequestConverter();
+  ...
+  var request = skillRequest.Request as InputHandlerEventRequest;
+  var event = request.Events.First();
 
 ```
 
 ## Stop Monitoring Interface Events
 ```csharp
+  StopEventHandler.AddToDirectiveConverter(); //As before - if deserializing
   var directive = new StopEventHandler(tokenFromStartHandler);
   skillResponse.Response.AddDirective(directive);
 ```
