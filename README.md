@@ -185,17 +185,18 @@ switch(skillRequest.Request)
 
 ## Start Monitoring Interface Events
 ```csharp
-  var token = guid.NewGuid();
-  var directive = new StartEventHandler(
-    token,
-	new Expiration(8000,new {data="randomData"}),
-	FilterMatchAction.SendAndTerminate,
-	new MultiEventFilter(
-	  "and",
-	  new SimpleEventFilter(">","payload.Angle",10),
-	  new SimpleEventFilter("==","header.Namespace","Robot")
-	)
-  )
+   const string gameOverText = "Game over! Would you like to hear your stats?";
+   var token = Guid.Parse("1234abcd-40bb-11e9-9527-6b98b093d166");
+   var expected = new StartEventHandler(
+       token,
+       new Expiration(8000, new {gameOverSpeech=gameOverText}),
+       FilterMatchAction.SendAndTerminate,
+       new CombinedFilterExpression(
+           CombinationOperator.And,
+           new ComparisonFilterExpression(ComparisonOperator.Equals, "header.namespace", "Custom.Robot"),
+           new ComparisonFilterExpression(ComparisonOperator.GreaterThan, "payload.angle", 10)
+               )
+   );
 ```
 
 
