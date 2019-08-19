@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 
 namespace Alexa.NET.Gadgets.CustomInterfaces
 {
-    [JsonConverter(typeof(FilterExpressionConverter))]
     public abstract class FilterExpression<T>:FilterExpression
     {
         protected FilterExpression() { }
@@ -27,6 +26,7 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
         public T Operator { get; set; }
     }
 
+    [JsonConverter(typeof(FilterExpressionConverter))]
     public abstract class FilterExpression
     {
         internal abstract string GetOperator();

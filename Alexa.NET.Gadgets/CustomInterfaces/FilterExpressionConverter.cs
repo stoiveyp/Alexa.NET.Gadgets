@@ -24,15 +24,14 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var op = reader.ReadAsString();
-            reader.Read(); //Start of Array set
-
-
+            reader.Read();
+            var op = reader.Value.ToString();
+            reader.Read();
             switch (op)
             {
                 case "and":
                 case "or":
-                    var combined = new CombinedFilterExpression { Operator = (CombinationOperator)Enum.Parse(typeof(CombinationOperator), op) };
+                    var combined = new CombinedFilterExpression { Operator = (CombinationOperator)Enum.Parse(typeof(CombinationOperator), char.ToUpper(op[0]) + op.Substring(1)) };
                     return ProcessCombinedExpression(combined, reader, serializer);
                 default:
                     var comparison = new ComparisonFilterExpression { Operator = (ComparisonOperator)Enum.Parse(typeof(ComparisonOperator), op) };
@@ -42,17 +41,21 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
 
         private ComparisonFilterExpression ProcessComparisonFilter(ComparisonFilterExpression expression, JsonReader reader, JsonSerializer serializer)
         {
+            reader.Skip();
             return expression;
         }
 
         private CombinedFilterExpression ProcessCombinedExpression(CombinedFilterExpression expression, JsonReader reader, JsonSerializer serializer)
         {
+            reader.Skip();
             return expression;
         }
 
+        private static readonly Type ExpressionType = typeof(FilterExpression);
+
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(FilterExpression);
+            return ExpressionType.IsAssignableFrom(objectType);
         }
     }
 }
