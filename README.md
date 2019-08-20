@@ -205,9 +205,11 @@ switch(skillRequest.Request)
 ```csharp
   new CustomInterfaceHandler().AddToRequestConverter();
   ...
-  var request = skillRequest.Request as InputHandlerEventRequest;
+  var request = skillRequest.Request as EventsReceivedRequest;
   var event = request.Events.First();
-
+  //...or
+  var request = skillRequest.Request as ExpiredRequest;
+  var payload = request.ExpirationPayload;
 ```
 
 ## Stop Monitoring Interface Events

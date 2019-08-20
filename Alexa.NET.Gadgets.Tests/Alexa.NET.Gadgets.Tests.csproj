@@ -24,6 +24,9 @@
       <None Update="Examples\EventsReceived.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Examples\Expired.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Examples\SendDirective.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

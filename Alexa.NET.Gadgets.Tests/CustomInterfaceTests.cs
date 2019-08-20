@@ -144,7 +144,18 @@ namespace Alexa.NET.Gadgets.Tests
 
             var payload = foundEvent.Payload as JObject;
             Assert.Equal("ok",payload.Value<string>("ack"));
+        }
 
+        [Fact]
+        public void ExpiredRequest()
+        {
+            new CustomInterfaceHandler().AddToRequestConverter();
+            var skillRequest = Utility.ExampleFileContent<SkillRequest>("Expired.json");
+            var request = Assert.IsType<ExpiredRequest>(skillRequest.Request);
+
+            Assert.Equal("1234abcd-40bb-11e9-9527-6b98b093d166",request.Token.ToString());
+            var payload = request.ExpirationPayload as JObject;
+            Assert.True(payload.Value<bool>("finished"));
         }
     }
 }

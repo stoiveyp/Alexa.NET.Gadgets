@@ -19,6 +19,8 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
             {
                 case "CustomInterfaceController.EventsReceived":
                     return new EventsReceivedRequest();
+                case "CustomInterfaceController.Expired":
+                    return new ExpiredRequest();
             }
 
             throw new InvalidOperationException("Unable to convert " + requestType);
