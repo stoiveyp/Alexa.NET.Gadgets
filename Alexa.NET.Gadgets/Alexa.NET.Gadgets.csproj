@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <Authors>Steven Pears</Authors>
-    <PackageReleaseNotes>update to netstandard2.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Added custom interface support</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>A simple package built to work with the Alexa Gadgets API, using Alexa.NET as the core</Description>
     <PackageLicenseUrl></PackageLicenseUrl>

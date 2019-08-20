@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "session": {
+    "application": {},
+    "user": {}
+  },
+  "request": {
+    "type": "CustomInterfaceController.EventsReceived",
+    "requestId": "amzn1.echo-api.request.406fbc75-8bf8-4077-a73d-519f53d172a4",
+    "timestamp": "2018-12-02T01:29:40.027Z",
+    "token": "1234abcd-40bb-11e9-9527-6b98b093d166",
+    "events": [
+      {
+        "header": {
+          "namespace": "Custom.Robot",
+          "name": "EyeBlink"
+        },
+        "endpoint": {
+          "endpointId": "amzn1.ask.endpoint.ABCD"
+        },
+        "payload": {
+          "ack": "ok"
+        }
+      }
+    ]
+  }
+}

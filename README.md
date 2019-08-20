@@ -153,7 +153,6 @@ switch(skillRequest.Request)
 }
 ```
 
-
 ## In Game - find out which gadget pressed first
 When an InputHandlerEventRequest is identified, this will see if the named event is found and what the gadget that triggered it was
 ```csharp
@@ -167,4 +166,55 @@ switch(skillRequest.Request)
         //Perform logic based on who buzzed in
       }
 }
+```
+
+# Custom Interface Support
+
+## Get endpoints
+```csharp
+  var api = new EndpointApi(skillRequest);
+  var endpoints = await api.GetEndpoints();
+```
+
+## Send Interface Directive
+```csharp
+  SendDirective.AddToDirectiveConverter(); //Only if you're deserializing directives from JSON
+  var directive = new SendDirective(endpointId, interfaceNamespace, interfaceName, customPayload);
+  skillResponse.Response.AddDirective(directive);
+```
+
+## Start Monitoring Interface Events
+```csharp
+   StartEventHandler.AddToDirectiveConverter(); //As before - if deserializing
+   const string gameOverText = "Game over! Would you like to hear your stats?";
+   var token = Guid.Parse("1234abcd-40bb-11e9-9527-6b98b093d166");
+   var expected = new StartEventHandler(
+       token,
+       new Expiration(8000, new {gameOverSpeech=gameOverText}),
+       FilterMatchAction.SendAndTerminate,
+       new CombinedFilterExpression(
+           CombinationOperator.And,
+           new ComparisonFilterExpression(ComparisonOperator.Equals, "header.namespace", "Custom.Robot"),
+           new ComparisonFilterExpression(ComparisonOperator.GreaterThan, "payload.angle", 10)
+               )
+   );
+```
+
+
+## Receive Interface Events
+```csharp
+  new CustomInterfaceHandler().AddToRequestConverter();
+  ...
+  var request = skillRequest.Request as EventsReceivedRequest;
+  var event = request.Events.First();
+  //...or
+  var request = skillRequest.Request as ExpiredRequest;
+  var payload = request.ExpirationPayload;
+```
+
+## Stop Monitoring Interface Events
+```csharp
+  StopEventHandler.AddToDirectiveConverter(); //As before - if deserializing
+  var directive = new StopEventHandler(tokenFromStartHandler);
+  skillResponse.Response.AddDirective(directive);
 ```

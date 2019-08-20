@@ -11,12 +11,16 @@ namespace Alexa.NET.Gadgets.Tests
     {
         private const string ExamplesPath = "Examples";
 
-        public static bool CompareJson(object actual, string expectedFile)
+        public static bool CompareJson(object actual, string expectedFile, params string[] exclude)
         {
             var actualJObject = JObject.FromObject(actual);
             var expected = File.ReadAllText(Path.Combine(ExamplesPath, expectedFile));
             var expectedJObject = JObject.Parse(expected);
-            Console.WriteLine(actualJObject);
+            foreach (var item in exclude)
+            {
+                actualJObject.Remove(item);
+                expectedJObject.Remove(item);
+            }
             return JToken.DeepEquals(expectedJObject, actualJObject);
         }
 

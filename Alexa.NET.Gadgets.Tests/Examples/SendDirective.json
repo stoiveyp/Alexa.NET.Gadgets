@@ -1,0 +1,14 @@
+{
+  "type": "CustomInterfaceController.SendDirective",
+  "endpoint": {
+    "endpointId": "amzn1.ask.endpoint.ABC123"
+  },
+  "header": {
+    "namespace": "Custom.Robot",
+    "name": "Spin"
+  },
+  "payload": {
+    "direction": "clockwise",
+    "times": 5
+  }
+}

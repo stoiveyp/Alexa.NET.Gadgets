@@ -1,0 +1,26 @@
+{
+  "endpoints": [
+    {
+      "endpointId": "amzn1.ask.endpoint.ABC123",
+      "friendlyName": "Gadget123",
+      "capabilities": [
+        {
+          "type": "AlexaInterface",
+          "interface": "Custom.CustomInterface1",
+          "version": "1.0"
+        }
+      ]
+    },
+    {
+      "endpointId": "amzn1.ask.endpoint.XYZ789",
+      "friendlyName": "Gadget789",
+      "capabilities": [
+        {
+          "type": "AlexaInterface",
+          "interface": "Custom.CustomInterface1",
+          "version": "1.0"
+        }
+      ]
+    }
+  ]
+}

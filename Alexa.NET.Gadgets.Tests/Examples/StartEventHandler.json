@@ -1,0 +1,29 @@
+{
+  "type": "CustomInterfaceController.StartEventHandler",
+  "token": "1234abcd-40bb-11e9-9527-6b98b093d166",
+  "expiration": {
+    "durationInMilliseconds": 8000,
+    "expirationPayload": {
+      "gameOverSpeech": "Game over! Would you like to hear your stats?"
+    }
+  },
+  "eventFilter": {
+    "filterExpression": {
+      "and": [
+        {
+          "==": [
+            { "var": "header.namespace" },
+            "Custom.Robot"
+          ]
+        },
+        {
+          ">": [
+            { "var": "payload.angle" },
+            10
+          ]
+        }
+      ]
+    },
+    "filterMatchAction": "SEND_AND_TERMINATE"
+  }
+}

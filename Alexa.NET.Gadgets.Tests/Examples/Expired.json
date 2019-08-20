@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "session": {
+    "application": {},
+    "user": {}
+  },
+  "request": {
+    "type": "CustomInterfaceController.Expired",
+    "requestId": "amzn1.echo-api.request.406fbc75-8bf8-4077-a73d-519f53d172a4",
+    "timestamp": "2018-12-02T01:29:40.027Z",
+    "expirationPayload": {
+      "finished": true 
+    },
+    "token": "1234abcd-40bb-11e9-9527-6b98b093d166"
+  }
+}
