@@ -25,6 +25,8 @@ jobs:
         run: |
           mkdir ~/tmp
           sudo curl -o ~/tmp/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+      - name: Change Perms
+        run: |
           sudo chmod 777 ~/tmp/nuget.exe
           cp ~/tmp/nuget.exe ~/usr/local/bin/nuget.exe
       - name: Add GH Repo
