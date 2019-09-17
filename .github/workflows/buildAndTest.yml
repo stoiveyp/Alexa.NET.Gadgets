@@ -20,9 +20,9 @@ jobs:
       - name: Setup NuGet
         run:  sudo curl -o /usr/local/bin/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
       - name: Add GH Repo
-        run:  alias nuget="mono /usr/local/bin/nuget.exe" && nuget source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/stoiveyp/Alexa.NET.Gadgets/index.json" -UserName stoiveyp -Password ${{ secrets.GH_TOKEN }}
+        run:  /usr/local/bin/nuget.exe source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/stoiveyp/Alexa.NET.Gadgets/index.json" -UserName stoiveyp -Password ${{ secrets.GH_TOKEN }}
       - name: Deploy to GH
-        run:  alias nuget="mono /usr/local/bin/nuget.exe" && nuget push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -Source "GitHub" 
+        run:  /usr/local/bin/nuget.exe push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -Source "GitHub" 
       - name: Deploy to NuGet
         run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
 
