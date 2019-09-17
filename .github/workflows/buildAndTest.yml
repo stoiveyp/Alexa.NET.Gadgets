@@ -25,16 +25,11 @@ jobs:
         run: |
           mkdir ~/tmp
           sudo curl -o ~/tmp/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-      - name: Change Perms
-        run: |
           sudo chmod 777 ~/tmp/nuget.exe
       - name: GH Deploy
         run: |
           ~/tmp/nuget.exe source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/stoiveyp/index.json" -UserName stoiveyp -Password ${{ secrets.GH_KEY }}
-          nuget pack
-          ~/tmp/nuget.exe ./Alexa.NET.Gadgets/bin/Release/Alexa.NET.Gadgets.nupkg
-      - name: Deploy to GH
-        run:  ~/tmp/nuget.exe push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -Source "GitHub" 
+          ~/tmp/nuget.exe push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -Source "GitHub"
       - name: Deploy to NuGet
         run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
 
