@@ -24,7 +24,7 @@ jobs:
       - name: Setup NuGet
         run: |
           mkdir ~/tmp
-          sudo curl -o ~tmp/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+          sudo curl -o ~/tmp/nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
           chmod +x ~/tmp/nuget.exe
           cp ~/tmp/nuget.exe ~/usr/local/bin/nuget.exe
       - name: Add GH Repo
