@@ -15,8 +15,10 @@ jobs:
         run:  dotnet build -c Release
       - name: Test Solution
         run:  dotnet test
+      - name: Add GH Repo
+        run:  nuget source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/stoiveyp/Alexa.NET.Gadgets/index.json" -UserName stoiveyp -Password ${{ secrets.GH_TOKEN }}
       - name: Deploy to GH
-        run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -k stoiveyp:${{ secrets.GH_TOKEN }} -s https://nuget.pkg.github.com/stoiveyp/Alexa.NET.Gadgets/index.json
+        run:  nuget push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -Source "GitHub" 
       - name: Deploy to NuGet
         run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
 
