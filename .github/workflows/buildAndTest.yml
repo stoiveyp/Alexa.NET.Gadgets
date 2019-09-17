@@ -29,7 +29,7 @@ jobs:
       - name: GH Deploy
         run: |
           ~/tmp/nuget.exe source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/stoiveyp/index.json" -UserName stoiveyp -Password ${{ secrets.GH_KEY }}
-          ~/tmp/nuget.exe push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -Source "GitHub"
+          ~/tmp/nuget.exe push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -Source "GitHub" -ApiKey stoiveyp:${{ secrets.GH_KEY }}
       - name: Deploy to NuGet
         run:  dotnet nuget push ./Alexa.NET.Gadgets/bin/Release/Alexa.NET*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
 
