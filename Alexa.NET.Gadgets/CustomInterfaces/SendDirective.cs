@@ -24,6 +24,8 @@ namespace Alexa.NET.Gadgets.CustomInterfaces
         }
 
         public const string DirectiveType = "CustomInterfaceController.SendDirective";
+
+        [JsonProperty("type")]
         public string Type => DirectiveType;
 
         [JsonProperty("endpoint")]
