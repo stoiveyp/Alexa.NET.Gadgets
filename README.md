@@ -180,7 +180,7 @@ switch(skillRequest.Request)
 ```csharp
   SendDirective.AddToDirectiveConverter(); //Only if you're deserializing directives from JSON
   var directive = new SendDirective(endpointId, interfaceNamespace, interfaceName, customPayload);
-  skillResponse.Response.AddDirective(directive);
+  skillResponse.Response.Directives.Add(directive);
 ```
 
 ## Start Monitoring Interface Events
@@ -216,5 +216,5 @@ switch(skillRequest.Request)
 ```csharp
   StopEventHandler.AddToDirectiveConverter(); //As before - if deserializing
   var directive = new StopEventHandler(tokenFromStartHandler);
-  skillResponse.Response.AddDirective(directive);
+  skillResponse.Response.Directives.Add(directive);
 ```
