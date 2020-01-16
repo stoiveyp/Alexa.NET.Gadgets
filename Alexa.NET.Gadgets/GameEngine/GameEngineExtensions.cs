@@ -69,7 +69,6 @@ namespace Alexa.NET.Gadgets.GameEngine
             AddTimeOutAndEvent(directive, RollCallCompleteName);
             AddRollCallRecognisers(directive, friendlyNames);
             SetDirective(response, directive);
-            response.Response.ShouldEndSession = null;
             return directive;
         }
 

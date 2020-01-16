@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Alexa.NET.Gadgets.GameEngine.Directives
 {
-    public class StartInputHandlerDirective:IDirective
+    public class StartInputHandlerDirective:IEndSessionDirective
     {
         [JsonProperty("type")]
         public string Type => "GameEngine.StartInputHandler";
@@ -23,5 +23,7 @@ namespace Alexa.NET.Gadgets.GameEngine.Directives
 
         [JsonProperty("events")]
         public IDictionary<string,InputHandlerEvent> Events { get; set; } = new Dictionary<string, InputHandlerEvent>();
+
+        public bool? ShouldEndSession => null;
     }
 }
